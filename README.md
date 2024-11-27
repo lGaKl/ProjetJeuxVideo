@@ -13,6 +13,6 @@ de Véga pour défaire le grand Stratéguerre et ainsi sauver la terre.
 
 Vous pourrez bien sûr compter sur Alcor, le professeur Procyon et bien d'autres pour vous assister dans cette quête.
 
-## Nous nous baserons sur ce Diagramme de classe non détaillés pour réaliser ce projet 
+## Nous nous baserons sur ce Diagramme de classe non détaillé pour réaliser ce projet 
 
 ![diag_classe](https://github.com/user-attachments/assets/f809c7b4-75f6-43c9-9352-be730bf8f09d)
