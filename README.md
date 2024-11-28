@@ -15,4 +15,5 @@ Vous pourrez bien sûr compter sur Alcor, le professeur Procyon et bien d'autres
 
 ## Nous nous baserons sur ce Diagramme de classe non détaillé pour réaliser ce projet 
 
-![Uploading diag_classe.jpg…]()
+![diag_classe](https://github.com/user-attachments/assets/8cf162e9-ff05-49a7-9f18-7c8ab3653d3d)
+
