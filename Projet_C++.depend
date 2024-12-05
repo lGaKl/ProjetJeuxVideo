@@ -462,3 +462,43 @@
 	"GameView.h"
 	<iostream>
 
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\controller\gamecontroller.cpp
+	"GameController.h"
+	<SFML/Window.hpp>
+
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\controller\gamecontroller.h
+	"GameView.h"
+	"Player.h"
+	"Deck.h"
+
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\view\gameview.h
+	<SFML/Graphics.hpp>
+	"Player.h"
+	"Deck.h"
+
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\model\player.h
+
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\model\deck.h
+	<vector>
+	"Card.h"
+
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\model\card.h
+	<string>
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\main.cpp
+	"Controller/GameController.h"
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\model\card.cpp
+	"Card.h"
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\model\deck.cpp
+	"Deck.h"
+	<stdexcept>
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\model\player.cpp
+	"Player.h"
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\view\gameview.cpp
+	"GameView.h"
+	<iostream>
+
