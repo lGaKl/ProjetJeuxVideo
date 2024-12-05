@@ -462,20 +462,33 @@
 	"GameView.h"
 	<iostream>
 
+<<<<<<< HEAD
 1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.cpp
 	"GameController.h"
 	<SFML/Window.hpp>
 
 1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.h
+=======
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\controller\gamecontroller.cpp
+	"GameController.h"
+	<SFML/Window.hpp>
+
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\controller\gamecontroller.h
+>>>>>>> 64f60c2b2bdfb0401dceb926f9d07c1481ebb3c5
 	"GameView.h"
 	"Player.h"
 	"Deck.h"
 
+<<<<<<< HEAD
 1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.h
+=======
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\view\gameview.h
+>>>>>>> 64f60c2b2bdfb0401dceb926f9d07c1481ebb3c5
 	<SFML/Graphics.hpp>
 	"Player.h"
 	"Deck.h"
 
+<<<<<<< HEAD
 1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.h
 
 1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.h
@@ -499,6 +512,31 @@
 	"Player.h"
 
 1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.cpp
+=======
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\model\player.h
+
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\model\deck.h
+	<vector>
+	"Card.h"
+
+1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\model\card.h
+	<string>
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\main.cpp
+	"Controller/GameController.h"
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\model\card.cpp
+	"Card.h"
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\model\deck.cpp
+	"Deck.h"
+	<stdexcept>
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\model\player.cpp
+	"Player.h"
+
+1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\view\gameview.cpp
+>>>>>>> 64f60c2b2bdfb0401dceb926f9d07c1481ebb3c5
 	"GameView.h"
 	<iostream>
 
