@@ -462,3 +462,43 @@
 	"GameView.h"
 	<iostream>
 
+1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.cpp
+	"GameController.h"
+	<SFML/Window.hpp>
+
+1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.h
+	"GameView.h"
+	"Player.h"
+	"Deck.h"
+
+1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.h
+	<SFML/Graphics.hpp>
+	"Player.h"
+	"Deck.h"
+
+1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.h
+
+1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.h
+	<vector>
+	"Card.h"
+
+1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.h
+	<string>
+
+1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\main.cpp
+	"Controller/GameController.h"
+
+1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.cpp
+	"Card.h"
+
+1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.cpp
+	"Deck.h"
+	<stdexcept>
+
+1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.cpp
+	"Player.h"
+
+1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.cpp
+	"GameView.h"
+	<iostream>
+
