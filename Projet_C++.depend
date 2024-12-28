@@ -32,18 +32,16 @@
 
 1732733508 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\model\player.h
 
-1732735839 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\main.cpp
-	"Controller/GameController.h"
+1735380852 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\main.cpp
+	"GameController.h"
+	<iostream>
 
-1732736770 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\controller\gamecontroller.h
-	"GameView.h"
-	"Player.h"
-	"Deck.h"
+1735397279 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\controller\gamecontroller.h
+	"EntryView.h"
 
-1732736952 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\gameview.h
+1735380825 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\gameview.h
 	<SFML/Graphics.hpp>
-	"Player.h"
-	"Deck.h"
+	"ViewManager.h"
 
 1729861932 c:\program files\codeblocks\sfml\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
@@ -454,11 +452,46 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1732736652 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\controller\gamecontroller.cpp
+1735403064 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\controller\gamecontroller.cpp
 	"GameController.h"
 	<SFML/Window.hpp>
+	<iostream>
 
-1732736979 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\gameview.cpp
+1735380829 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\gameview.cpp
 	"GameView.h"
+	<iostream>
+
+1735346653 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\mainmenuview.cpp
+	"ViewManager.h"
+
+1735381090 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\viewmanager.h
+	<SFML/Graphics.hpp>
+	<functional>
+	<stack>
+
+1735380815 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\viewmanager.cpp
+	"ViewManager.h"
+
+1735346726 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\mainmenuview.cpp
+	"ViewManager.h"
+	<iostream>
+
+1735377889 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\view.h
+	<SFML/Graphics.hpp>
+
+1735377970 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\anotherview.h
+	"View.h"
+	<SFML/Graphics.hpp>
+
+1735378410 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\anotherview.cpp
+	"AnotherView.h"
+	<iostream>
+
+1735402762 d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\entryview.h
+	<SFML/Graphics.hpp>
+	"ViewManager.h"
+
+1735403052 source:d:\usb\ecole\bac3\c++\projet_c++\projet_c++\view\entryview.cpp
+	"EntryView.h"
 	<iostream>
 

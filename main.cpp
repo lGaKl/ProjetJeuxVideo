@@ -1,8 +1,13 @@
-#include "Controller/GameController.h"
+#include "GameController.h"
+#include <iostream>
 
 int main() {
-    GameController gameController;
-    gameController.run();
-
+    try {
+        GameController controller;
+        controller.run();
+    } catch (const std::exception& e) {
+        std::cerr << "Erreur : " << e.what() << std::endl;
+        return 1;
+    }
     return 0;
 }

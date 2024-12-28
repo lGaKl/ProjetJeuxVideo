@@ -1,15 +1,11 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 
-#include "GameView.h"
-#include "Player.h"
-#include "Deck.h"
+#include "EntryView.h"
 
 class GameController {
 private:
-    GameView view;
-    Player player;
-    Deck deck;
+    EntryView view;
 
 public:
     GameController();
