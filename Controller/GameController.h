@@ -10,6 +10,7 @@ private:
     GameView view;
     Player player;
     Deck deck;
+    std::vector<Card> drawnCards;
 
 public:
     GameController();

@@ -1,6 +1,6 @@
 #include "GameController.h"
 #include <SFML/Window.hpp>
-
+#include <iostream>
 
 
 
@@ -23,13 +23,20 @@ GameController::GameController() : player(100) {
 // Méthode run(boucle principale du jeu)
 void GameController::run() {
     deck.shuffle();
+    drawnCards.clear();
+   std::cout << "Début de la boucle de tirage de cartes" << std::endl;
     for (int i = 0; i < 4; ++i) {
-        if (!deck.isEmpty()) {
-            Card drawnCard = deck.drawCard();
-            // Affiche la carte tirée
-            std::cout << "Carte " << (i + 1) << ": " << drawnCard.getName() << " - " << drawnCard.getDescription() << std::endl;
-        }
+    if (!deck.isEmpty()) {
+        Card drawnCard = deck.drawCard();
+        drawnCards.push_back(drawnCard);
     }
+    }
+
+    std::cout << "Début de la boucle de tirage de cartes" << std::endl;
+    for (int i = 0; i < drawnCards.size(); ++i) {
+        std::cout << "Carte " << (i + 1) << ": " << drawnCards[i].getName() << " - " << drawnCards[i].getDescription() << std::endl;
+    }
+
 
     while (view.isWindowOpen()) {
         handleEvents();//Gére interaction utilisateur et evenement de la fenétre
@@ -70,7 +77,7 @@ void GameController::render() {
 
             // Créer un objet sf::Text pour afficher le nom de la carte
             sf::Text cardText;
-            cardText.setFont(view.getFont());  // Assurer que tu as chargé une police dans GameView
+            //cardText.setFont(view.getFont());  // Assurer que tu as chargé une police dans GameView
             cardText.setString(drawnCard.getName() + ": " + drawnCard.getDescription());
             cardText.setCharacterSize(24);  // Taille du texte
             cardText.setFillColor(sf::Color::White);  // Couleur du texte
