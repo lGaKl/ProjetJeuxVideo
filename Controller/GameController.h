@@ -14,6 +14,13 @@ private:
 public:
     GameController();
     void run();
+    void handleEvents();
+    void update();
+    void render();
+    // Getter
+    GameView& getView() { return view; }
+    Player& getPlayer() { return player; }
+    Deck& getDeck() { return deck; }
 };
 
 #endif // GAMECONTROLLER_H

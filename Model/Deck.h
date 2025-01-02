@@ -10,8 +10,10 @@ private:
 
 public:
     void addCard(const Card& card);
+    void shuffle();
     Card drawCard();
     bool isEmpty() const;
+    size_t size() const;
 };
 
 #endif // DECK_H
