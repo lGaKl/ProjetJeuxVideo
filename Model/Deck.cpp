@@ -43,3 +43,7 @@ bool Deck::isEmpty() const{return cards.empty();}
  size_t Deck::size() const {
         return cards.size();
     }
+
+const std::vector<Card>& Deck::getCard() const {
+    return cards;  // Retourner une référence constante vers le vecteur de cartes
+}

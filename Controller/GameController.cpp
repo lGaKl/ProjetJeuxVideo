@@ -32,7 +32,6 @@ void GameController::run() {
     }
     }
 
-    std::cout << "Début de la boucle de tirage de cartes" << std::endl;
     for (int i = 0; i < drawnCards.size(); ++i) {
         std::cout << "Carte " << (i + 1) << ": " << drawnCards[i].getName() << " - " << drawnCards[i].getDescription() << std::endl;
     }
@@ -67,27 +66,15 @@ void GameController::update() {
 }
 
 void GameController::render() {
-    view.render(player); // Affichage du joueur
-    float xPos = 50.0f;  // Position X pour les cartes
-    float yPos = 50.0f;  // Position Y pour les cartes
+    // Réinitialisez la fenêtre avant de la redessiner (effacer l'écran)
+    view.getWindow().clear();
 
-    for (int i = 0; i < 4; ++i) {
-        if (!deck.isEmpty()) {
-            Card drawnCard = deck.drawCard();
+    // Afficher les informations du joueur (exemple : afficher la santé)
+    view.render(player,drawnCards);
 
-            // Créer un objet sf::Text pour afficher le nom de la carte
-            sf::Text cardText;
-            //cardText.setFont(view.getFont());  // Assurer que tu as chargé une police dans GameView
-            cardText.setString(drawnCard.getName() + ": " + drawnCard.getDescription());
-            cardText.setCharacterSize(24);  // Taille du texte
-            cardText.setFillColor(sf::Color::White);  // Couleur du texte
-            cardText.setPosition(xPos, yPos);  // Positionner le texte sur l'écran
+    view.renderCards(drawnCards);
 
-            // Ajouter le texte à la fenêtre
-            view.getWindow().draw(cardText);
-
-            // Modifier la position pour la prochaine carte
-            yPos += 50.0f;  // Déplacer vers le bas pour la carte suivante
-        }
-    }
+    // Afficher les éléments sur la fenêtre
+    view.getWindow().display();
 }
+

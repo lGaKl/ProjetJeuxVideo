@@ -14,7 +14,8 @@ private:
 public:
     GameView();
     sf::RenderWindow& getWindow() { return window; }
-    void render(const Player& player);
+    void render(const Player& player, const std::vector<Card>& cards);  // Méthode pour afficher le joueur et les cartes
+    void renderCards(const std::vector<Card>& cards);
     bool isWindowOpen() const;
 };
 
