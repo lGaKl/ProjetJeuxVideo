@@ -464,7 +464,7 @@
 
 1733396623 D
 
-1735821873 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.cpp
+1735827221 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.cpp
 	"GameController.h"
 	<SFML/Window.hpp>
 	<iostream>
@@ -490,7 +490,7 @@
 	"GameView.h"
 	<iostream>
 
-1735821154 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.h
+1735825807 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.h
 	<SFML/Graphics.hpp>
 	"Player.h"
 	"Deck.h"
@@ -499,7 +499,7 @@
 
 1732792246 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.h
 
-1735821154 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.h
+1735825404 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.h
 	<vector>
 	"Card.h"
 
@@ -512,7 +512,7 @@
 1735821154 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.cpp
 	"Card.h"
 
-1735822281 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.cpp
+1735825364 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.cpp
 	"Deck.h"
 	<stdexcept>
 	<random>
@@ -523,9 +523,10 @@
 1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.cpp
 	"Player.h"
 
-1735821016 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.cpp
+1735828041 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.cpp
 	"GameView.h"
 	<iostream>
+	<sstream>
 
 1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\model\player.h
 

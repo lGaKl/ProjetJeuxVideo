@@ -12,6 +12,7 @@ public:
     void addCard(const Card& card);
     void shuffle();
     Card drawCard();
+    const std::vector<Card>& getCard() const;
     bool isEmpty() const;
     size_t size() const;
 };
