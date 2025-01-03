@@ -961,7 +961,7 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1735900287 source:c:\users\testbug\projetjeuxvideos\projetjeuxvideo\controller\gamecontroller.cpp
+1735900676 source:c:\users\testbug\projetjeuxvideos\projetjeuxvideo\controller\gamecontroller.cpp
 	"GameController.h"
 	<SFML/Window.hpp>
 	<iostream>
@@ -980,7 +980,7 @@
 1735900287 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\model\card.h
 	<string>
 
-1735900287 source:c:\users\testbug\projetjeuxvideos\projetjeuxvideo\model\deck.cpp
+1735900676 source:c:\users\testbug\projetjeuxvideos\projetjeuxvideo\model\deck.cpp
 	"Deck.h"
 	<stdexcept>
 	<random>
@@ -988,7 +988,7 @@
 	<algorithm>
 	<iostream>
 
-1735900287 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\model\deck.h
+1735900676 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\model\deck.h
 	<vector>
 	"Card.h"
 
@@ -997,11 +997,12 @@
 
 1732794883 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\model\player.h
 
-1735900287 source:c:\users\testbug\projetjeuxvideos\projetjeuxvideo\view\gameview.cpp
+1735900676 source:c:\users\testbug\projetjeuxvideos\projetjeuxvideo\view\gameview.cpp
 	"GameView.h"
 	<iostream>
+	<sstream>
 
-1732794883 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\view\gameview.h
+1735900676 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\view\gameview.h
 	<SFML/Graphics.hpp>
 	"Player.h"
 	"Deck.h"
