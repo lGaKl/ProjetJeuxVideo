@@ -6,6 +6,7 @@
 #include "DeckEnemy.h"
 
 bool isEnemyTurnReady = false;
+bool canInteractWithCards = true;
 Enemy enemy(100);
 bool isPlayerTurn = true;  // Indique si c'est le tour du joueur
 bool hasValidated = false;
@@ -143,36 +144,40 @@ void GameController::handleEvents() {
                     std::pow(mousePosition.y - (circlePosition.y + radius), 2) <=
                     std::pow(radius, 2)) {
 
-                    // Gestion du flux de jeu selon l'état
                     if (isEnemyTurnReady) {
-                        // L'ennemi peut jouer son tour
+                        // L'ennemi joue son tour
                         enemyTurn();
                         isEnemyTurnReady = false; // Réinitialisation pour le prochain tour
-                        view.updateSituationText("Votre tour !"); // Réafficher le message
+                        canInteractWithCards = true; // Réactiver les interactions après le tour de l'ennemi
                     } else {
                         // Le joueur termine son tour
                         if (selectedCardIndex >= 0 && selectedCardIndex < static_cast<int>(drawnCards.size())) {
                             playPlayerTurn();
                             isEnemyTurnReady = true; // Préparer pour le tour de l'ennemi
                             view.updateSituationText("Tour de l'ennemi. Cliquez pour continuer.");
+                            canInteractWithCards = false; // Désactiver les interactions pendant le message
                         } else {
                             std::cout << "Aucune carte sélectionnée." << std::endl;
                         }
                     }
-                } else {
-                    // Clic sur une carte
+                } else if (canInteractWithCards) {
+                    // Clic sur une carte (autorisé uniquement si les interactions sont activées)
                     handleCardClick(mousePosition);
                 }
             }
         } else if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Left) {
-                selectedCardIndex = std::max(0, selectedCardIndex - 1);
-            } else if (event.key.code == sf::Keyboard::Right) {
-                selectedCardIndex = std::min(static_cast<int>(drawnCards.size() - 1), selectedCardIndex + 1);
+            if (canInteractWithCards) { // Autoriser les raccourcis uniquement si les interactions sont activées
+                if (event.key.code == sf::Keyboard::Left) {
+                    selectedCardIndex = std::max(0, selectedCardIndex - 1);
+                } else if (event.key.code == sf::Keyboard::Right) {
+                    selectedCardIndex = std::min(static_cast<int>(drawnCards.size() - 1), selectedCardIndex + 1);
+                }
             }
         }
     }
 }
+
+
 
 
 void GameController::playPlayerTurn() {
@@ -181,8 +186,6 @@ void GameController::playPlayerTurn() {
         enemy.takeDamage(damage);
         std::cout << "Vous attaquez l'ennemi avec " << drawnCards[selectedCardIndex].getName()
                   << ", infligeant " << damage << " dégâts." << std::endl;
-        view.updateSituationText("Vous attaquez l'ennemi avec " + drawnCards[selectedCardIndex].getName() +
-                         ", infligeant " + std::to_string(damage) + " dégâts.");
 
     } else if (drawnCards[selectedCardIndex].getType() == "PV") {
         int healing = std::stoi(drawnCards[selectedCardIndex].getValue());
@@ -209,24 +212,25 @@ void GameController::playPlayerTurn() {
 void GameController::enemyTurn() {
     if (!enemyDeck.isEmpty()) {
         Card enemyCard = enemyDeck.drawCard();
-        std::cout << "L'ennemi joue : " << enemyCard.getName() << std::endl;
+        std::string enemyActionText;
 
         if (enemyCard.getType() == "Att") {
             int damage = std::stoi(enemyCard.getValue());
             player.takeDamage(damage);
-            std::cout << "L'ennemi attaque avec " << enemyCard.getName()
-                      << ", infligeant " << damage << " dégâts." << std::endl;
-            view.updateSituationText("L'ennemi attaque avec " + enemyCard.getName());
+            enemyActionText = "L'ennemi attaque avec " + enemyCard.getName() +
+                              ", infligeant " + std::to_string(damage) + " dégâts.";
+            std::cout << enemyActionText << std::endl;
         } else if (enemyCard.getType() == "PV") {
             int healing = std::stoi(enemyCard.getValue());
             enemy.heal(healing);
-            std::cout << "L'ennemi se soigne avec " << enemyCard.getName()
-                      << ", récupérant " << healing << " PV." << std::endl;
-            view.updateSituationText("L'ennemi se soigne avec " + enemyCard.getName());
+            enemyActionText = "L'ennemi se soigne avec " + enemyCard.getName() +
+                              ", récupérant " + std::to_string(healing) + " PV.";
+            std::cout << enemyActionText << std::endl;
         }
 
-        // Mise à jour de l'état du jeu
+        // Mise à jour de l'état du jeu et de l'affichage
         view.updateHealthDisplay(player.getHealth(), enemy.getHealth());
+        view.updateSituationText(enemyActionText); // Afficher ce que l'ennemi a fait
     }
 }
 
