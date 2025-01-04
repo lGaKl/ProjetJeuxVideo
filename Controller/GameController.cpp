@@ -33,6 +33,10 @@ GameController::GameController() : selectedCardIndex(-1), player(100) {
     deck.addCard(Card("Bouclier Renforcé", "Bloque 15 points de dégâts.", "Def", "15"));
     deck.addCard(Card("Barrière Énergétique", "Bloque 20 points de dégâts.", "Def", "20"));
 
+     deck.addCard(Card("Bouclier Léger", "Bloque 10 points de dégâts.", "Def", "10"));
+    deck.addCard(Card("Bouclier Renforcé", "Bloque 15 points de dégâts.", "Def", "15"));
+    deck.addCard(Card("Barrière Énergétique", "Bloque 20 points de dégâts.", "Def", "20"));
+
     // Cartes de bonus
     deck.addCard(Card("Boost d'Alcor", "Double les dégâts infligés par Goldorak pendant 1 tour.", "Bonus", "Dégâts * 2"));
     deck.addCard(Card("Soutien de Vénusia", "Double les PV restaurés par Goldorak pendant 1 tour.", "Bonus", "Heal * 2"));
@@ -108,7 +112,11 @@ void GameController::handleCardClick(const sf::Vector2i& mousePos) {
                 std::string situationText = "Vous vous soignez avec " + drawnCards[selectedCardIndex].getName() + " et restaurez " + std::to_string(healing) + " points de vie.";
                 view.updateSituationText(situationText);  // Mise à jour du texte dans la situation
             } else if (drawnCards[selectedCardIndex].getType() == "Def") {
-                std::string situationText = "Vous vous défendez avec " + drawnCards[selectedCardIndex].getName();
+                int defenseValue = std::stoi(drawnCards[selectedCardIndex].getValue());
+
+
+                std::string situationText = "Vous vous défendez avec " + drawnCards[selectedCardIndex].getName() +
+                                ", bloquant jusqu'à " + std::to_string(defenseValue) + " dégâts pendant ce tour.";
                 view.updateSituationText(situationText);  // Mise à jour du texte dans la situation
             } else if (drawnCards[selectedCardIndex].getType() == "Bonus") {
                 std::string situationText = "Vous activez un bonus avec " + drawnCards[selectedCardIndex].getName();
@@ -192,7 +200,13 @@ void GameController::playPlayerTurn() {
         player.heal(healing);
         std::cout << "Vous vous soignez avec " << drawnCards[selectedCardIndex].getName()
                   << ", récupérant " << healing << " PV." << std::endl;
+    }else if (drawnCards[selectedCardIndex].getType() == "Def") {
+    int defenseValue = std::stoi(drawnCards[selectedCardIndex].getValue());
+    player.applyDefense(defenseValue);
+    std::cout << "Vous vous défendez avec " << drawnCards[selectedCardIndex].getName()
+              << ", bloquant jusqu'à " << defenseValue << " dégâts." << std::endl;
     }
+
 
     // Mise à jour de l'état du jeu
     view.updateHealthDisplay(player.getHealth(), enemy.getHealth());
@@ -226,6 +240,12 @@ void GameController::enemyTurn() {
             enemyActionText = "L'ennemi se soigne avec " + enemyCard.getName() +
                               ", récupérant " + std::to_string(healing) + " PV.";
             std::cout << enemyActionText << std::endl;
+        }else if (enemyCard.getType() == "Def") {
+            int defenseValue = std::stoi(enemyCard.getValue());
+            enemy.applyDefense(defenseValue);
+            enemyActionText = "L'ennemi se défend avec " + enemyCard.getName() +
+                      ", bloquant jusqu'à " + std::to_string(defenseValue) + " dégâts.";
+            std::cout << enemyActionText << std::endl;
         }
 
         // Mise à jour de l'état du jeu et de l'affichage
@@ -248,6 +268,11 @@ void GameController::update() {
     if (player.getHealth() <= 0) {
         std::cout << "Vous avez été vaincu !" << std::endl;
         // Vous pouvez ajouter des actions supplémentaires pour finir le jeu ici
+    }
+    if (isPlayerTurn) {
+        player.resetDefense();
+    } else {
+        enemy.resetDefense();
     }
 }
 
