@@ -5,7 +5,7 @@
 #include "Enemy.h"
 #include "DeckEnemy.h"
 
-
+bool isEnemyTurnReady = false;
 Enemy enemy(100);
 bool isPlayerTurn = true;  // Indique si c'est le tour du joueur
 bool hasValidated = false;
@@ -142,42 +142,22 @@ void GameController::handleEvents() {
                 if (std::pow(mousePosition.x - (circlePosition.x + radius), 2) +
                     std::pow(mousePosition.y - (circlePosition.y + radius), 2) <=
                     std::pow(radius, 2)) {
-                    // Si une carte est sélectionnée
-                    if (selectedCardIndex >= 0 && selectedCardIndex < static_cast<int>(drawnCards.size())) {
-                        std::cout << "Carte validée : " << drawnCards[selectedCardIndex].getName() << std::endl;
-                        view.updateCardPlayedText(drawnCards[selectedCardIndex]);
 
-                        // Si la carte est une carte d'attaque, appliquer les dégâts
-                        if (drawnCards[selectedCardIndex].getType() == "Att") {
-                            int damage = std::stoi(drawnCards[selectedCardIndex].getValue());
-                            std::cout << "Avant de modifier : PV de l'ennemi = " << enemy.getHealth() << std::endl;
-                            enemy.takeDamage(damage);
-                            std::cout << "Après modification : PV de l'ennemi = " << enemy.getHealth() << std::endl;
-
-                        }else if (drawnCards[selectedCardIndex].getType() == "PV") {
-                            int healing = std::stoi(drawnCards[selectedCardIndex].getValue());
-                            std::cout << "Avant de modifier : PV du joueur = " << player.getHealth() << std::endl;
-                            player.heal(healing);  // Appliquer le soin
-                            std::cout << "Après modification : PV du joueur = " << player.getHealth() << std::endl;
-                        }
-                        view.updateHealthDisplay(player.getHealth(), enemy.getHealth());
-                        // Supprimer la carte sélectionnée
-                        drawnCards.erase(drawnCards.begin() + selectedCardIndex);
-
-                        // Tirer une nouvelle carte si le deck n'est pas vide
-                        if (!deck.isEmpty()) {
-                            Card newCard = deck.drawCard();
-                            drawnCards.push_back(newCard);  // Ajouter la nouvelle carte à la fin
-                        }
-
-
-                    // L'ennemi joue son tour une fois validé
-                    enemyTurn();
-
-                        // Réinitialiser la sélection
-                        selectedCardIndex = -1;
+                    // Gestion du flux de jeu selon l'état
+                    if (isEnemyTurnReady) {
+                        // L'ennemi peut jouer son tour
+                        enemyTurn();
+                        isEnemyTurnReady = false; // Réinitialisation pour le prochain tour
+                        view.updateSituationText("Votre tour !"); // Réafficher le message
                     } else {
-                        std::cout << "Aucune carte sélectionnée." << std::endl;
+                        // Le joueur termine son tour
+                        if (selectedCardIndex >= 0 && selectedCardIndex < static_cast<int>(drawnCards.size())) {
+                            playPlayerTurn();
+                            isEnemyTurnReady = true; // Préparer pour le tour de l'ennemi
+                            view.updateSituationText("Tour de l'ennemi. Cliquez pour continuer.");
+                        } else {
+                            std::cout << "Aucune carte sélectionnée." << std::endl;
+                        }
                     }
                 } else {
                     // Clic sur une carte
@@ -192,44 +172,63 @@ void GameController::handleEvents() {
             }
         }
     }
-}  // Fin de la méthode handleEvents()
-
-// Vous devriez vous assurer que tous les autres blocs de code et méthodes sont également correctement fermés
+}
 
 
+void GameController::playPlayerTurn() {
+    if (drawnCards[selectedCardIndex].getType() == "Att") {
+        int damage = std::stoi(drawnCards[selectedCardIndex].getValue());
+        enemy.takeDamage(damage);
+        std::cout << "Vous attaquez l'ennemi avec " << drawnCards[selectedCardIndex].getName()
+                  << ", infligeant " << damage << " dégâts." << std::endl;
+        view.updateSituationText("Vous attaquez l'ennemi avec " + drawnCards[selectedCardIndex].getName() +
+                         ", infligeant " + std::to_string(damage) + " dégâts.");
 
+    } else if (drawnCards[selectedCardIndex].getType() == "PV") {
+        int healing = std::stoi(drawnCards[selectedCardIndex].getValue());
+        player.heal(healing);
+        std::cout << "Vous vous soignez avec " << drawnCards[selectedCardIndex].getName()
+                  << ", récupérant " << healing << " PV." << std::endl;
+    }
+
+    // Mise à jour de l'état du jeu
+    view.updateHealthDisplay(player.getHealth(), enemy.getHealth());
+
+    // Supprimer la carte utilisée et repiocher
+    drawnCards.erase(drawnCards.begin() + selectedCardIndex);
+    if (!deck.isEmpty()) {
+        drawnCards.push_back(deck.drawCard());
+    }
+
+    // Réinitialiser la sélection
+    selectedCardIndex = -1;
+}
 
 
 
 void GameController::enemyTurn() {
-
-    // L'ennemi pioche une carte de son deck et joue
     if (!enemyDeck.isEmpty()) {
         Card enemyCard = enemyDeck.drawCard();
         std::cout << "L'ennemi joue : " << enemyCard.getName() << std::endl;
 
         if (enemyCard.getType() == "Att") {
             int damage = std::stoi(enemyCard.getValue());
-            std::cout << "Avant de modifier : PV du joueur = " << player.getHealth() << std::endl;
             player.takeDamage(damage);
-            std::cout << "Après modification : PV du joueur = " << player.getHealth() << std::endl;
-            // Mise à jour du texte de la situation
-            std::string situationText = "L'ennemi attaque avec " + enemyCard.getName() + " infligeant " + std::to_string(damage) + " dégâts.";
-            view.updateSituationText(situationText);  // Mise à jour du texte dans la situation
+            std::cout << "L'ennemi attaque avec " << enemyCard.getName()
+                      << ", infligeant " << damage << " dégâts." << std::endl;
+            view.updateSituationText("L'ennemi attaque avec " + enemyCard.getName());
         } else if (enemyCard.getType() == "PV") {
-            int healing = std::stoi(enemyCard.getValue());  // Récupérer la valeur de soin
-            std::cout << "Avant de modifier : PV de l'ennemi = " << enemy.getHealth() << std::endl;
-            enemy.heal(healing);  // Appliquer le soin à l'ennemi
-            std::cout << "Après modification : PV de l'ennemi = " << enemy.getHealth() << std::endl;
-            // Mise à jour du texte de la situation
-            std::string situationText = "L'ennemi se soigne avec " + enemyCard.getName() + " et restaure " + std::to_string(healing) + " points de vie.";
-            view.updateSituationText(situationText);  // Mise à jour du texte dans la situation
+            int healing = std::stoi(enemyCard.getValue());
+            enemy.heal(healing);
+            std::cout << "L'ennemi se soigne avec " << enemyCard.getName()
+                      << ", récupérant " << healing << " PV." << std::endl;
+            view.updateSituationText("L'ennemi se soigne avec " + enemyCard.getName());
         }
-    }
 
-        // Après le tour de l'ennemi, mettre à jour l'affichage
+        // Mise à jour de l'état du jeu
         view.updateHealthDisplay(player.getHealth(), enemy.getHealth());
     }
+}
 
 
 

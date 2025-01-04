@@ -25,6 +25,7 @@ public:
 
     void handleCardClick(const sf::Vector2i& mousePos);
     void enemyTurn();
+    void playPlayerTurn();
     // Getter
     GameView& getView() { return view; }
     Player& getPlayer() { return player; }
