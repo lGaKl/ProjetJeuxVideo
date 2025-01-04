@@ -2,24 +2,89 @@
 #include <iostream>
 #include <sstream>
 
+
 // Constructeur de GameView : initialisation de la fenêtre et de la police
 GameView::GameView() : window(sf::VideoMode(1900, 1080), "Projet C++") {
     // Chargement de la police
+
+    window.setVerticalSyncEnabled(true);
     if (!font.loadFromFile("bin/Arial.ttf")) {  // Assurez-vous d'avoir une police "arial.ttf" dans le répertoire ou modifiez le chemin
         std::cerr << "Erreur de chargement de la police!" << std::endl;
     }
+
+    cardPlayedText.setFont(font);
+    cardPlayedText.setCharacterSize(20);
+    cardPlayedText.setFillColor(sf::Color::White);
+    cardPlayedText.setPosition(550.f, 620.f);
+
+    validationCircle.setRadius(50.0f);
+    validationCircle.setFillColor(sf::Color::Green);
+    validationCircle.setOutlineColor(sf::Color::White);
+    validationCircle.setOutlineThickness(3.0f);
+    validationCircle.setPosition(1600.0f, 700.0f);
+
+    situation.setSize(sf::Vector2f(1200.f, 50.f));  // Taille du rectangle (300x150)
+    situation.setFillColor(sf::Color::Red);  // Couleur de remplissage
+    situation.setOutlineColor(sf::Color::White);  // Couleur de bordure
+    situation.setOutlineThickness(2.f);  // Épaisseur de la bordure
+    situation.setPosition(400.f, 600.f);
+
+    playerRect.setSize(sf::Vector2f(200.0f, 100.0f));
+    playerRect.setFillColor(sf::Color::Blue);
+    playerRect.setPosition(100.0f, 300.0f);
+
+    playerNameText.setFont(font);
+    playerNameText.setCharacterSize(20);
+    playerNameText.setFillColor(sf::Color::White);
+    playerNameText.setString("Joueur");
+    playerNameText.setPosition(100.0f, 270.0f);
+
+    playerHealthText.setFont(font);
+    playerHealthText.setCharacterSize(20);
+    playerHealthText.setFillColor(sf::Color::White);
+    playerHealthText.setPosition(100.0f, 420.0f);
+
+    enemyRect.setSize(sf::Vector2f(200.0f, 100.0f));
+    enemyRect.setFillColor(sf::Color::Red);
+    enemyRect.setPosition(1600.0f, 300.0f);
+    enemyNameText.setFont(font);
+    enemyNameText.setCharacterSize(20);
+    enemyNameText.setFillColor(sf::Color::White);
+    enemyNameText.setString("Ennemi");
+    enemyNameText.setPosition(1600.0f, 270.0f);
+
+    enemyHealthText.setFont(font);
+    enemyHealthText.setCharacterSize(20);
+    enemyHealthText.setFillColor(sf::Color::White);
+    enemyHealthText.setPosition(1600.0f, 420.0f);
+
 }
 
-void GameView::render(const Player& player, const std::vector<Card>& cards) {
+sf::CircleShape& GameView::getValidationCircle() {
+    return validationCircle;
+}
+void GameView::updateHealthDisplay(int playerHealth, int enemyHealth) {
+    playerHealthText.setString("Vie : " + std::to_string(playerHealth));
+    enemyHealthText.setString("Vie : " + std::to_string(enemyHealth));
+}
+void GameView::render(const Player& player, const std::vector<Card>& cards,int selectedCardIndex,const Enemy& enemy) {
     window.clear();  // Effacer la fenêtre avant de redessiner
 
-    // Mettre à jour et afficher la santé du joueur
-    playerHealthText.setString("Santé: " + std::to_string(player.getHealth()));
+    window.draw(playerRect);
+    window.draw(playerNameText);
     window.draw(playerHealthText);
+    window.draw(enemyRect);
+    window.draw(enemyNameText);
+    window.draw(enemyHealthText);
+    updateHealthDisplay(player.getHealth(), enemy.getHealth());
 
     // Afficher les cartes
-    renderCards(cards);
+    renderCards(cards,selectedCardIndex);
 
+
+    window.draw(validationCircle);
+    window.draw(situation);
+    window.draw(cardPlayedText);
     window.display();  // Afficher tout à l'écran
 }
 
@@ -55,11 +120,11 @@ std::vector<std::string> wrapText(const std::string& text, const sf::Font& font,
     return lines;
 }
 
-void GameView::renderCards(const std::vector<Card>& cards) {
-    float xPos = 50.0f;  // Position X pour les cartes
-    float yPos = 150.0f;  // Position Y pour les cartes (pour les décaler un peu vers le bas)
-    float cardWidth = 300.0f;  // Largeur des cartes
-    float cardHeight = 150.0f; // Hauteur des cartes
+void GameView::renderCards(const std::vector<Card>& cards,int selectedCardIndex) {
+    float xPos = 500.0f;  // Position X pour les cartes
+    float yPos = 700.0f;  // Position Y pour les cartes (pour les décaler un peu vers le bas)
+    float cardWidth = 200.0f;  // Largeur des cartes
+    float cardHeight = 250.0f; // Hauteur des cartes
     float padding = 20.0f;  // Espacement entre les cartes
     unsigned int fontSize = 14;  // Taille de la police pour la description
 
@@ -71,7 +136,12 @@ void GameView::renderCards(const std::vector<Card>& cards) {
 
         // Créer un rectangle pour la carte
         sf::RectangleShape cardRect(sf::Vector2f(cardWidth, cardHeight));
-        cardRect.setFillColor(sf::Color(50, 50, 150));  // Couleur de fond de la carte
+         if (selectedCardIndex == static_cast<int>(i)) {
+        cardRect.setFillColor(sf::Color(100, 100, 250));  // Couleur surbrillante
+        } else {
+        cardRect.setFillColor(sf::Color(50, 50, 150));  // Couleur normale
+        }
+        //cardRect.setFillColor(sf::Color(50, 50, 150));  // Couleur de fond de la carte
         cardRect.setOutlineColor(sf::Color::White);  // Couleur de bordure
         cardRect.setOutlineThickness(2);  // Épaisseur de la bordure
         cardRect.setPosition(xPos, yPos);  // Positionner le rectangle
@@ -114,6 +184,21 @@ void GameView::renderCards(const std::vector<Card>& cards) {
         xPos += cardWidth + padding;  // Déplacer vers le bas pour la carte suivante
     }
 }
+void GameView::updateCardPlayedText(const Card& card) {
+    cardPlayedText.setString("");
+    // Mettre à jour le texte avec les informations de la carte
+    cardPlayedText.setString("Carte Jouée: " + card.getName() );
+
+}
+
+void GameView::updateSituationText(const std::string& situationText) {
+    cardPlayedText.setString(situationText);
+}
+
+
+
+
+
 
 // Méthode pour vérifier si la fenêtre est ouverte
 bool GameView::isWindowOpen() const {

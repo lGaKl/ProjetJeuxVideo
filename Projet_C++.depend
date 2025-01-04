@@ -464,15 +464,19 @@
 
 1733396623 D
 
-1735827221 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.cpp
+1735939851 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.cpp
 	"GameController.h"
 	<SFML/Window.hpp>
 	<iostream>
+	<cmath>
+	"Enemy.h"
+	"DeckEnemy.h"
 
-1735821826 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.h
+1735939980 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.h
 	"GameView.h"
 	"Player.h"
 	"Deck.h"
+	"DeckEnemy.h"
 
 1733396623 source:c:\users\laros\desktop\jeux video\projetjeuxvideo\controller\gamecontroller.cpp
 	"GameController.h"
@@ -490,10 +494,11 @@
 	"GameView.h"
 	<iostream>
 
-1735825807 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.h
+1735938004 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.h
 	<SFML/Graphics.hpp>
 	"Player.h"
 	"Deck.h"
+	"Enemy.h"
 
 1733396623 c:\users\laros\desktop\jeux video\projetjeuxvideo\view\gameview.h
 
@@ -503,13 +508,13 @@
 	<vector>
 	"Card.h"
 
-1735821154 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.h
+1735929441 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.h
 	<string>
 
 1735821154 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\main.cpp
 	"Controller/GameController.h"
 
-1735821154 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.cpp
+1735929398 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.cpp
 	"Card.h"
 
 1735825364 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.cpp
@@ -520,10 +525,10 @@
 	<algorithm>
 	<iostream>
 
-1732792246 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.cpp
+1735935132 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.cpp
 	"Player.h"
 
-1735828041 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.cpp
+1735937971 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.cpp
 	"GameView.h"
 	<iostream>
 	<sstream>
@@ -960,4 +965,22 @@
 	<SFML/Graphics/PrimitiveType.hpp>
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
+
+1735932179 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\enemy.cpp
+	"Enemy.h"
+	<iostream>
+
+1735932042 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\enemy.h
+
+1735936969 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deckenemy.cpp
+	"DeckEnemy.h"
+	<stdexcept>
+	<random>
+	<chrono>
+	<algorithm>
+	<iostream>
+
+1735937324 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deckenemy.h
+	<vector>
+	"Card.h"
 

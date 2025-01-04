@@ -16,6 +16,9 @@ public:
     std::string getDescription() const;
     std::string getType() const;
     std::string getValue() const;
+    int getAttackValue() const;
+    int getHealValue() const;
+    int getDefenseValue() const;
 };
 
 #endif // CARD_H_
