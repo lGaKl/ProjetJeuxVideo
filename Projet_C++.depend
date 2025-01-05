@@ -1034,16 +1034,18 @@
 
 1736105888 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\model\player.h
 
-1736105888 source:c:\users\testbug\projetjeuxvideos\projetjeuxvideo\view\gameview.cpp
+1736112029 source:c:\users\testbug\projetjeuxvideos\projetjeuxvideo\view\gameview.cpp
 	"GameView.h"
 	<iostream>
 	<sstream>
+	<random>
 
-1736105888 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\view\gameview.h
+1736112076 c:\users\testbug\projetjeuxvideos\projetjeuxvideo\view\gameview.h
 	<SFML/Graphics.hpp>
 	"Player.h"
 	"Deck.h"
 	"Enemy.h"
+	<random>
 
 1732794883 
 

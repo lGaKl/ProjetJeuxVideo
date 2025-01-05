@@ -1,6 +1,7 @@
 #include "GameView.h"
 #include <iostream>
 #include <sstream>
+#include <random>
 
 /*
 This GameView class is responsible for rendering the visual elements of the game. It manages the game window,
@@ -11,11 +12,54 @@ including the characters' health, available cards, and displays text for the pla
 GameView::GameView() : window(sf::VideoMode(1900, 1080), "C++ Project") {
     // Loading the font
 
+    std::random_device rd;  // Générateur de nombres aléatoires basé sur une source externe
+    rng = std::mt19937(rd());  // Initialise le générateur avec un "seed" aléatoire
+
     window.setVerticalSyncEnabled(true);
     if (!font.loadFromFile("Arial.ttf")) {  // Make sure you have an "arial.ttf" font in the directory or change the path
         std::cerr << "Error loading font!" << std::endl;
     }
 
+    // Charger la texture pour le fond d'écran
+    if (!backgroundTexture.loadFromFile("Image/fond.png")) {
+        std::cerr << "Erreur de chargement de la texture du fond!" << std::endl;
+    }
+    backgroundSprite.setTexture(backgroundTexture);
+
+    // Ajuster l'échelle si la taille de l'image ne correspond pas à la taille de la fenêtre
+    float scaleXBackground = static_cast<float>(window.getSize().x) / backgroundTexture.getSize().x;
+    float scaleYBackground = static_cast<float>(window.getSize().y) / backgroundTexture.getSize().y;
+    backgroundSprite.setScale(scaleXBackground, scaleYBackground);
+
+    // Charger la texture
+    if (!playerTexture.loadFromFile("Image/player.png")) {  // Remplacez "player.png" par le chemin de votre fichier
+        std::cerr << "Erreur de chargement de la texture du joueur!" << std::endl;
+    }
+
+    // Obtenez les dimensions de la texture originale
+    sf::Vector2u textureSize = playerTexture.getSize();
+
+    // Dimensions souhaitées (par exemple, largeur de 100 pixels)
+    float targetWidth = 100.0f;
+    float targetHeight = static_cast<float>(targetWidth) / textureSize.x * textureSize.y;
+
+    // Appliquez le facteur de mise à l'échelle pour le joueur
+    float scaleXPlayer = targetWidth / textureSize.x;
+    float scaleYPlayer = targetHeight / textureSize.y;
+
+    // Appliquer la texture au sprite et ajuster la taille
+    playerSprite.setTexture(playerTexture);
+    playerSprite.setPosition(330.0f, 220.0f);  // Position similaire au rectangle initial
+    playerSprite.setScale(scaleXPlayer, scaleYPlayer);  // Mise à l'échelle pour ajuster la taille
+
+    // Choisir aléatoirement l'image de l'ennemi
+    std::string enemyImage = chooseEnemyImage();
+    if (!enemyTexture.loadFromFile(enemyImage)) {  // Utilisez l'image choisie aléatoirement
+        std::cerr << "Erreur de chargement de la texture de l'ennemi!" << std::endl;
+    }
+    enemySprite.setTexture(enemyTexture);
+    enemySprite.setPosition(1370.0f, 220.0f);  // Position similaire au rectangle initial
+    enemySprite.setScale(1.0f, 1.0f);  // Ajustez la taille si nécessaire
 
     cardPlayedText.setFont(font);
     cardPlayedText.setCharacterSize(20);
@@ -30,43 +74,54 @@ GameView::GameView() : window(sf::VideoMode(1900, 1080), "C++ Project") {
     validationCircle.setPosition(1600.0f, 700.0f);
 */
     situation.setSize(sf::Vector2f(1200.f, 50.f));  // Rectangle size (300x150)
-    situation.setFillColor(sf::Color::Red);  // Fill color
-    situation.setOutlineColor(sf::Color::White);  // Outline color
+    situation.setFillColor(sf::Color::Blue);  // Fill color
+    situation.setOutlineColor(sf::Color::Black);  // Outline color
     situation.setOutlineThickness(2.f);  // Outline thickness
     situation.setPosition(400.f, 600.f);
 
-    playerRect.setSize(sf::Vector2f(200.0f, 100.0f));
-    playerRect.setFillColor(sf::Color::Blue);
-    playerRect.setPosition(100.0f, 300.0f);
 
     playerNameText.setFont(font);
-    playerNameText.setCharacterSize(20);
-    playerNameText.setFillColor(sf::Color::White);
+    playerNameText.setCharacterSize(40);
+    playerNameText.setFillColor(sf::Color::Green);
     playerNameText.setString("Player");
-    playerNameText.setPosition(100.0f, 270.0f);
+    playerNameText.setPosition(330.0f, 150.0f);
 
     playerHealthText.setFont(font);
-    playerHealthText.setCharacterSize(20);
-    playerHealthText.setFillColor(sf::Color::White);
-    playerHealthText.setPosition(100.0f, 420.0f);
+    playerHealthText.setCharacterSize(30);
+    playerHealthText.setFillColor(sf::Color::Green);
+    playerHealthText.setPosition(330.0f, 370.0f);
 
-    enemyRect.setSize(sf::Vector2f(200.0f, 100.0f));
+    /*enemyRect.setSize(sf::Vector2f(200.0f, 100.0f));
     enemyRect.setFillColor(sf::Color::Red);
-    enemyRect.setPosition(1600.0f, 300.0f);
+    enemyRect.setPosition(1600.0f, 300.0f);*/
     enemyNameText.setFont(font);
-    enemyNameText.setCharacterSize(20);
-    enemyNameText.setFillColor(sf::Color::White);
+    enemyNameText.setCharacterSize(40);
+    enemyNameText.setFillColor(sf::Color::Red);
     enemyNameText.setString("Enemy");
-    enemyNameText.setPosition(1600.0f, 270.0f);
+    enemyNameText.setPosition(1370.0f, 150.0f);
 
     enemyHealthText.setFont(font);
-    enemyHealthText.setCharacterSize(20);
-    enemyHealthText.setFillColor(sf::Color::White);
-    enemyHealthText.setPosition(1600.0f, 420.0f);
+    enemyHealthText.setCharacterSize(30);
+    enemyHealthText.setFillColor(sf::Color::Red);
+    enemyHealthText.setPosition(1370.0f, 370.0f);
 }
 
 sf::CircleShape& GameView::getValidationCircle() {
     return validationCircle;
+}
+
+std::string GameView::chooseEnemyImage() {
+    // Définir une liste d'images possibles pour l'ennemi
+    std::vector<std::string> enemyImages = {"Image/enemy1.png", "Image/enemy2.png", "Image/enemy3.png", "Image/enemy4.png", "Image/enemy5.png"};
+
+    // Distribution uniforme entre 0 et le nombre d'images
+    std::uniform_int_distribution<int> dist(0, enemyImages.size() - 1);
+
+    // Choisir une image aléatoire
+    int index = dist(rng);
+
+    // Retourner le chemin de l'image choisie
+    return enemyImages[index];
 }
 
 void GameView::updateHealthDisplay(int playerHealth, int enemyHealth) {
@@ -76,31 +131,34 @@ void GameView::updateHealthDisplay(int playerHealth, int enemyHealth) {
 
 void GameView::initValidationCircle() {
     validationCircle.setRadius(50.0f);  // Définir les propriétés du cercle
-    validationCircle.setFillColor(sf::Color::Green);
-    validationCircle.setOutlineColor(sf::Color::White);
+    validationCircle.setFillColor(sf::Color::Red);
+    validationCircle.setOutlineColor(sf::Color::Black);
     validationCircle.setOutlineThickness(3.0f);
     validationCircle.setPosition(1600.0f, 700.0f);  // Position initiale
 }
 void GameView::render(const Player& player, const std::vector<Card>& cards, int selectedCardIndex, const Enemy& enemy) {
     window.clear();
 
-    window.draw(playerRect);
+    // Dessiner le fond d'écran
+    window.draw(backgroundSprite);
+
+    // Dessiner les autres éléments par-dessus
+    window.draw(playerSprite);
     window.draw(playerNameText);
     window.draw(playerHealthText);
-    window.draw(enemyRect);
+    window.draw(enemySprite);
     window.draw(enemyNameText);
     window.draw(enemyHealthText);
+
     updateHealthDisplay(player.getHealth(), enemy.getHealth());
 
     window.draw(validationCircle);
-    // Display the cards
     renderCards(cards, selectedCardIndex);
 
-
-   // window.draw(validationCircle);
     window.draw(situation);
     window.draw(cardPlayedText);
-    window.display();  // Show everything on the screen
+
+    window.display();
 }
 
 // Function to split a text string into multiple lines based on the maximum width
