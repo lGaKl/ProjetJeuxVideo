@@ -4,30 +4,32 @@
 #include <chrono>
 #include <algorithm>
 #include <iostream>
+//The DeckEnemy class is similar to the Deck class but specifically represents the enemy's deck of cards in the game.
 void DeckEnemy::addCard(const Card& card){cards.push_back(card);}
 
 void DeckEnemy::shuffle() {
-    // Utiliser std::chrono pour obtenir un "temps" comme graine différente à chaque appel
+    // Use std::chrono to get a "time" as a different seed for each call
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::mt19937 rng(seed);  // Générateur de nombres aléatoires basé sur Mersenne Twister
+    std::mt19937 rng(seed);  // Mersenne Twister based random number generator
 
-    // Afficher les cartes avant le mélange
-    std::cout << "Avant le mélange : " << std::endl;
+    // Display the cards before shuffling
+    std::cout << "Before shuffling: " << std::endl;
     for (const auto& card : cards) {
         std::cout << card.getName() << " ";
     }
     std::cout << std::endl;
 
-    // Mélanger les cartes avec std::shuffle
+    // Shuffle the cards using std::shuffle
     std::shuffle(cards.begin(), cards.end(), rng);
 
-    // Afficher les cartes après le mélange
-    std::cout << "Après le mélange : " << std::endl;
+    // Display the cards after shuffling
+    std::cout << "After shuffling: " << std::endl;
     for (const auto& card : cards) {
         std::cout << card.getName() << " ";
     }
     std::cout << std::endl;
 }
+
 
 Card DeckEnemy::drawCard(){
     if(cards.empty()){
@@ -45,5 +47,5 @@ bool DeckEnemy::isEmpty() const{return cards.empty();}
     }
 
 const std::vector<Card>& DeckEnemy::getCard() const {
-    return cards;  // Retourner une référence constante vers le vecteur de cartes
+    return cards;
 }

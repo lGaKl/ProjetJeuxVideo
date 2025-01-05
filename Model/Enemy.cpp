@@ -1,54 +1,58 @@
 #include "Enemy.h"
 #include <iostream>
-// Constructeur : Initialise l'ennemi avec des points de vie donnés
+
+
+//This class manages the health, defense, and interactions of the enemy with attacks, healing, and defense management in the game.
+// Constructor: Initializes the enemy with given health points
 Enemy::Enemy(int initialHealth) : health(initialHealth),defense(0) {}
 
-// Retourne les points de vie actuels de l'ennemi
+// Returns the current health points of the enemy
 int Enemy::getHealth() const {
     return health;
 }
 
-void Enemy::takeDamage(int damage) {std::cout << "Attaque ennemie: " << damage << ", Défense: " << defense << ", PV avant: " << health << std::endl;
+void Enemy::takeDamage(int damage) {
+    std::cout << "Enemy attack: " << damage << ", Defense: " << defense << ", Health before: " << health << std::endl;
 
     if (defense > 0) {
         if (damage <= defense) {
-            // Si l'attaque est inférieure ou égale à la défense, la défense absorbe tous les dégâts
-            std::cout << "Défense > Attaque : La défense absorbe tous les dégâts." << std::endl;
+            // If the attack is less than or equal to the defense, the defense absorbs all the damage
+            std::cout << "Defense > Attack: Defense absorbs all the damage." << std::endl;
             health -= defense;
-            defense = 0; // La défense est épuisée
+            defense = 0; // Defense is used up
         } else if (damage > defense) {
-            // Si l'attaque est plus grande que la défense, on applique les dégâts restants
-            std::cout << "Attaque > Défense : Dégâts après réduction par la défense: " << (damage - defense) << std::endl;
+            // If the attack is greater than the defense, apply the remaining damage
+            std::cout << "Attack > Defense: Damage after defense reduction: " << (damage - defense) << std::endl;
             health -= damage;
-            defense = 0; // La défense est épuisée après avoir absorbé une partie des dégâts
+            defense = 0; // Defense is used up after absorbing part of the damage
         }
     } else if (damage == 0) {
-        // Si l'ennemi n'attaque pas, on consomme la défense
-        std::cout << "L'ennemi n'a pas attaqué : La défense est consommée sans infliger de dégâts." << std::endl;
+        // If the enemy does not attack, the defense is consumed
+        std::cout << "Enemy did not attack: Defense is consumed without damage." << std::endl;
         health -= defense;
-        defense = 0; // La défense est consommée
+        defense = 0; // Defense is consumed
     } else {
-        // Si aucune défense, on applique directement les dégâts
-        std::cout << "Aucune défense : Dégâts appliqués directement." << std::endl;
+        // If no defense, apply the damage directly
+        std::cout << "No defense: Damage applied directly." << std::endl;
         health -= damage;
     }
 
-    // Ne jamais laisser la santé du joueur inférieure à 0
+    // Never let the health be less than 0
     health = std::max(0, health);
 
-    // Affichage pour vérifier la santé après les dégâts
-    std::cout << "PV après dégâts: " << health << std::endl;
+    // Display to verify health after damage
+    std::cout << "Health after damage: " << health << std::endl;
 }
 
 
 
-// Soigne l'ennemi en augmentant ses points de vie
+// Heals the enemy by increasing their health points
 void Enemy::heal(int healAmount) {
     health += healAmount;
     if (health > 100) health = 100;
 }
 
-// Retourne vrai si l'ennemi est encore en vie
+// Returns true if the enemy is still alive
 bool Enemy::isAlive() const {
     return health > 0;
 }

@@ -464,13 +464,16 @@
 
 1733396623 D
 
-1736040940 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.cpp
+1736103872 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.cpp
 	"GameController.h"
 	<SFML/Window.hpp>
 	<iostream>
 	<cmath>
 	"Enemy.h"
 	"DeckEnemy.h"
+	"windows.h"
+	"mmsystem.h"
+	<SFML/Audio.hpp>
 
 1736039692 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\controller\gamecontroller.h
 	"GameView.h"
@@ -494,7 +497,7 @@
 	"GameView.h"
 	<iostream>
 
-1736025644 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.h
+1736096136 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.h
 	<SFML/Graphics.hpp>
 	"Player.h"
 	"Deck.h"
@@ -508,16 +511,18 @@
 	<vector>
 	"Card.h"
 
-1736025644 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.h
+1736098806 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.h
 	<string>
+	<SFML/Graphics.hpp>
 
 1735821154 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\main.cpp
 	"Controller/GameController.h"
 
-1736025644 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.cpp
+1736099076 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\card.cpp
 	"Card.h"
+	<iostream>
 
-1736025644 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.cpp
+1736089597 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deck.cpp
 	"Deck.h"
 	<stdexcept>
 	<random>
@@ -525,11 +530,11 @@
 	<algorithm>
 	<iostream>
 
-1736034386 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.cpp
+1736089991 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\player.cpp
 	"Player.h"
 	<iostream>
 
-1736025644 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.cpp
+1736101413 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\view\gameview.cpp
 	"GameView.h"
 	<iostream>
 	<sstream>
@@ -967,13 +972,13 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1736034406 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\enemy.cpp
+1736089899 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\enemy.cpp
 	"Enemy.h"
 	<iostream>
 
 1736033484 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\enemy.h
 
-1736025644 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deckenemy.cpp
+1736089680 source:c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deckenemy.cpp
 	"DeckEnemy.h"
 	<stdexcept>
 	<random>
@@ -984,4 +989,108 @@
 1736025644 c:\users\asust\onedrive - haute ecole louvain en hainaut\bloc_3\dev_jv\projet\projetjeuxvideo\model\deckenemy.h
 	<vector>
 	"Card.h"
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio.hpp
+	<SFML/System.hpp>
+	<SFML/Audio/InputSoundFile.hpp>
+	<SFML/Audio/Listener.hpp>
+	<SFML/Audio/Music.hpp>
+	<SFML/Audio/OutputSoundFile.hpp>
+	<SFML/Audio/Sound.hpp>
+	<SFML/Audio/SoundBuffer.hpp>
+	<SFML/Audio/SoundBufferRecorder.hpp>
+	<SFML/Audio/SoundFileFactory.hpp>
+	<SFML/Audio/SoundFileReader.hpp>
+	<SFML/Audio/SoundFileWriter.hpp>
+	<SFML/Audio/SoundRecorder.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/Audio/SoundStream.hpp>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\inputsoundfile.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<algorithm>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\export.hpp
+	<SFML/Config.hpp>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\listener.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/Vector3.hpp>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\music.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundStream.hpp>
+	<SFML/Audio/InputSoundFile.hpp>
+	<SFML/System/Mutex.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundstream.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/Mutex.hpp>
+	<cstdlib>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundsource.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Vector3.hpp>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\alresource.hpp
+	<SFML/Audio/Export.hpp>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\outputsoundfile.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<string>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\sound.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/System/Time.hpp>
+	<cstdlib>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundbuffer.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+	<set>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundbufferrecorder.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundBuffer.hpp>
+	<SFML/Audio/SoundRecorder.hpp>
+	<vector>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundrecorder.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/Time.hpp>
+	<vector>
+	<string>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundfilefactory.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
+	<vector>
+	<SFML/Audio/SoundFileFactory.inl>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundfilefactory.inl
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundfilereader.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
+
+1525808418 c:\program files\codeblocks\sfml-2.5.1\include\sfml\audio\soundfilewriter.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
 

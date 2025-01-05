@@ -29,6 +29,7 @@ public:
     void updateHealthDisplay(int playerHealth, int enemyHealth);
     sf::CircleShape& getValidationCircle();
     void updateSituationText(const std::string& situationText);
+    void initValidationCircle();
 };
 
 #endif // GAMEVIEW_H
