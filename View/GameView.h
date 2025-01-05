@@ -5,19 +5,28 @@
 #include "Player.h"
 #include "Deck.h"
 #include "Enemy.h"
+#include <random>
 class GameView {
 private:
+    std::string chooseEnemyImage();
     sf::RenderWindow window;
     sf::Font font;
     sf::Text cardPlayedText;
     sf::CircleShape validationCircle;
     sf::RectangleShape situation;
-    sf::RectangleShape playerRect;       // Rectangle pour le joueur
+    //sf::RectangleShape playerRect;       // Rectangle pour le joueur
     sf::Text playerNameText;             // Texte pour le nom du joueur
     sf::Text playerHealthText;
-    sf::RectangleShape enemyRect;
+    //sf::RectangleShape enemyRect;
     sf::Text enemyNameText;              // Texte pour le nom de l'ennemi
     sf::Text enemyHealthText;
+    sf::Texture playerTexture;
+    sf::Sprite playerSprite;
+    sf::Texture enemyTexture;
+    sf::Sprite enemySprite;
+    sf::Texture backgroundTexture; // Texture pour le fond
+    sf::Sprite backgroundSprite;  // Sprite pour le fond
+    std::mt19937 rng;
 public:
     GameView();
     sf::RenderWindow& getWindow() { return window; }

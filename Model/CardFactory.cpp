@@ -1,23 +1,25 @@
-// Method to create a heal card
+#include "CardFactory.h"
+
+// Méthode pour créer une carte de soin
 Card CardFactory::createHealCard(const std::string& name, const std::string& description, const std::string& type, const std::string& points, const std::string& imagePath) {
-    // Returns a Card object for a heal card
+    // Retourne un objet Card pour une carte de soin
     return Card(name, description, type, points, imagePath);
 }
 
-// Method to create an attack card
+// Méthode pour créer une carte d'attaque
 Card CardFactory::createAttackCard(const std::string& name, const std::string& description, const std::string& type, const std::string& points, const std::string& imagePath) {
-    // Returns a Card object for an attack card
+    // Retourne un objet Card pour une carte d'attaque
     return Card(name, description, type, points, imagePath);
 }
 
-// Method to create a defense card
+// Méthode pour créer une carte de défense
 Card CardFactory::createDefenseCard(const std::string& name, const std::string& description, const std::string& type, const std::string& points, const std::string& imagePath) {
-    // Returns a Card object for a defense card
+    // Retourne un objet Card pour une carte de défense
     return Card(name, description, type, points, imagePath);
 }
 
-// Method to create a bonus card
+// Méthode pour créer une carte bonus
 Card CardFactory::createBonusCard(const std::string& name, const std::string& description, const std::string& type, const std::string& points, const std::string& imagePath) {
-    // Returns a Card object for a bonus card
+    // Retourne un objet Card pour une carte bonus
     return Card(name, description, type , points , imagePath);
 }
