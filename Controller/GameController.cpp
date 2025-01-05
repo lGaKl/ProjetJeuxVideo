@@ -7,6 +7,7 @@
 #include "windows.h"
 #include "mmsystem.h"
 #include <SFML/Audio.hpp>
+#include "CardFactory.h"
 bool isEnemyTurnReady = false;
 bool canInteractWithCards = true;
 bool isArchorActive = false;
@@ -17,80 +18,80 @@ bool hasValidated = false;
 GameController::GameController() : selectedCardIndex(-1), player(100) {
 //Player's deck
 // Heal cards
-deck.addCard(Card("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
-deck.addCard(Card("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
-deck.addCard(Card("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
+deck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
+deck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
+deck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
 
-deck.addCard(Card("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
-deck.addCard(Card("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
-deck.addCard(Card("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
+deck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
+deck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
+deck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
 
 // Attack cards (Att)
-deck.addCard(Card("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-deck.addCard(Card("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-deck.addCard(Card("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
 
-deck.addCard(Card("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-deck.addCard(Card("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-deck.addCard(Card("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
 
-deck.addCard(Card("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-deck.addCard(Card("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-deck.addCard(Card("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
 
-deck.addCard(Card("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-deck.addCard(Card("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-deck.addCard(Card("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
 
 // Defense cards (Def)
-deck.addCard(Card("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
-deck.addCard(Card("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
-deck.addCard(Card("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+deck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
+deck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
+deck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
 
-deck.addCard(Card("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
-deck.addCard(Card("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
-deck.addCard(Card("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+deck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
+deck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
+deck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
 
 // Bonus cards
-deck.addCard(Card("Alcor's Boost", "Play again immediately, and your damage will be doubled.", "Bonus", "Dmg*2","Image/alcor.png"));
-deck.addCard(Card("Venusia's Support", "Doubles health restored by Goldorak for 1 turn.", "Bonus", "Hp*2","Image/venusia.png"));
+deck.addCard(CardFactory::createBonusCard("Alcor's Boost", "Play again immediately, and your damage will be doubled.", "Bonus", "Dmg*2","Image/alcor.png"));
+deck.addCard(CardFactory::createBonusCard("Venusia's Support", "Doubles health restored by Goldorak for 1 turn.", "Bonus", "Hp*2","Image/venusia.png"));
 
 // Enemy's deck
 
-// heal cards
-enemyDeck.addCard(Card("Basic Heal", "Restores 10 health points to Goldorak.", "HP", "10"));
-enemyDeck.addCard(Card("Minor Repair", "Restores 15 health points to Goldorak.", "HP", "15"));
-enemyDeck.addCard(Card("Full Restoration", "Restores 20 health points to Goldorak.", "HP", "20"));
+enemyDeck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
+enemyDeck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
+enemyDeck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
 
-enemyDeck.addCard(Card("Basic Heal", "Restores 10 health points to Goldorak.", "HP", "10"));
-enemyDeck.addCard(Card("Minor Repair", "Restores 15 health points to Goldorak.", "HP", "15"));
-enemyDeck.addCard(Card("Full Restoration", "Restores 20 health points to Goldorak.", "HP", "20"));
+enemyDeck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
+enemyDeck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
+enemyDeck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
 
-// atk cards
-enemyDeck.addCard(Card("Basic Laser", "Deals 15 damage points to the enemy.", "Att", "15"));
-enemyDeck.addCard(Card("Improved Laser", "Deals 20 damage points to the enemy.", "Att", "20"));
-enemyDeck.addCard(Card("Powerful Shot", "Deals 25 damage points to the enemy.", "Att", "25"));
+// Attack cards (Att)
+enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
 
-enemyDeck.addCard(Card("Basic Laser", "Deals 15 damage points to the enemy.", "Att", "15"));
-enemyDeck.addCard(Card("Improved Laser", "Deals 20 damage points to the enemy.", "Att", "20"));
-enemyDeck.addCard(Card("Powerful Shot", "Deals 25 damage points to the enemy.", "Att", "25"));
+enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
 
-enemyDeck.addCard(Card("Basic Laser", "Deals 15 damage points to the enemy.", "Att", "15"));
-enemyDeck.addCard(Card("Improved Laser", "Deals 20 damage points to the enemy.", "Att", "20"));
-enemyDeck.addCard(Card("Powerful Shot", "Deals 25 damage points to the enemy.", "Att", "25"));
+enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
 
-enemyDeck.addCard(Card("Basic Laser", "Deals 15 damage points to the enemy.", "Att", "15"));
-enemyDeck.addCard(Card("Improved Laser", "Deals 20 damage points to the enemy.", "Att", "20"));
-enemyDeck.addCard(Card("Powerful Shot", "Deals 25 damage points to the enemy.", "Att", "25"));
+enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
 
-//def cards
-enemyDeck.addCard(Card("Light Shield", "Blocks 10 damage points.", "Def", "10"));
-enemyDeck.addCard(Card("Reinforced Shield", "Blocks 15 damage points.", "Def", "15"));
-enemyDeck.addCard(Card("Energy Barrier", "Blocks 20 damage points.", "Def", "20"));
+// Defense cards (Def)
+enemyDeck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
+enemyDeck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
+enemyDeck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
 
-enemyDeck.addCard(Card("Light Shield", "Blocks 10 damage points.", "Def", "10"));
-enemyDeck.addCard(Card("Reinforced Shield", "Blocks 15 damage points.", "Def", "15"));
-enemyDeck.addCard(Card("Energy Barrier", "Blocks 20 damage points.", "Def", "20"));
+enemyDeck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
+enemyDeck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
+enemyDeck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+
 
 enemyDeck.shuffle();
 }
