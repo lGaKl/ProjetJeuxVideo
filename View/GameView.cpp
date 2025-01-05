@@ -194,7 +194,7 @@ void GameView::renderCards(const std::vector<Card>& cards, int selectedCardIndex
         cardValue.setString(card.getValue());
         cardValue.setCharacterSize(18);  // Taille de la police pour la valeur
         cardValue.setFillColor(sf::Color::White);  // Couleur du texte
-        cardValue.setPosition(xPos + cardWidth - 50.0f, yPos + 10.0f);  // Positionner le texte de la valeur à l'intérieur du rectangle
+        cardValue.setPosition(xPos + cardWidth - 60.0f, yPos + 10.0f);  // Positionner le texte de la valeur à l'intérieur du rectangle
 
         // Dessiner le nom et la valeur
         window.draw(cardName);
