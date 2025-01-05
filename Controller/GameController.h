@@ -24,6 +24,7 @@ public:
     void render();
 
     void handleCardClick(const sf::Vector2i& mousePos);
+
     void enemyTurn();
     void playPlayerTurn();
     // Getter

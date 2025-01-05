@@ -18,7 +18,7 @@ public:
     // Méthode pour savoir si l'ennemi est vivant
     bool isAlive() const;
     void applyDefense(int defenseValue);
-    void resetDefense() ;
+
 
 private:
     int health;  // Points de vie de l'ennemi

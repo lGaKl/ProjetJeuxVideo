@@ -12,8 +12,7 @@ public:
     int getHealth() const;
     void applyDefense(int defenseValue);
 
-    // Méthode pour réinitialiser la défense temporaire
-    void resetDefense();
+
 };
 
 #endif // PLAYER_H

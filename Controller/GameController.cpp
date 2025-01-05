@@ -7,16 +7,28 @@
 
 bool isEnemyTurnReady = false;
 bool canInteractWithCards = true;
+bool isArchorActive = false;
+bool isVenusiaActive = false;
 Enemy enemy(100);
 bool isPlayerTurn = true;  // Indique si c'est le tour du joueur
 bool hasValidated = false;
 GameController::GameController() : selectedCardIndex(-1), player(100) {
     // Cartes de soin (PV)
+
     deck.addCard(Card("Soin Basique", "Restaure 10 points de vie à Goldorak.", "PV", "10"));
     deck.addCard(Card("Réparation Mineure", "Restaure 15 points de vie à Goldorak.", "PV", "15"));
     deck.addCard(Card("Restauration Complète", "Restaure 20 points de vie à Goldorak.", "PV", "20"));
 
+    deck.addCard(Card("Soin Basique", "Restaure 10 points de vie à Goldorak.", "PV", "10"));
+    deck.addCard(Card("Réparation Mineure", "Restaure 15 points de vie à Goldorak.", "PV", "15"));
+    deck.addCard(Card("Restauration Complète", "Restaure 20 points de vie à Goldorak.", "PV", "20"));
+
+
     // Cartes d'attaque (Att)
+    deck.addCard(Card("Laser Basique", "Inflige 10 points de dégâts à l'ennemi.", "Att", "15"));
+    deck.addCard(Card("Laser Amélioré", "Inflige 15 points de dégâts à l'ennemi.", "Att", "20"));
+    deck.addCard(Card("Tir Puissant", "Inflige 20 points de dégâts à l'ennemi.", "Att", "25"));
+
     deck.addCard(Card("Laser Basique", "Inflige 10 points de dégâts à l'ennemi.", "Att", "15"));
     deck.addCard(Card("Laser Amélioré", "Inflige 15 points de dégâts à l'ennemi.", "Att", "20"));
     deck.addCard(Card("Tir Puissant", "Inflige 20 points de dégâts à l'ennemi.", "Att", "25"));
@@ -33,20 +45,37 @@ GameController::GameController() : selectedCardIndex(-1), player(100) {
     deck.addCard(Card("Bouclier Renforcé", "Bloque 15 points de dégâts.", "Def", "15"));
     deck.addCard(Card("Barrière Énergétique", "Bloque 20 points de dégâts.", "Def", "20"));
 
-     deck.addCard(Card("Bouclier Léger", "Bloque 10 points de dégâts.", "Def", "10"));
+    deck.addCard(Card("Bouclier Léger", "Bloque 10 points de dégâts.", "Def", "10"));
     deck.addCard(Card("Bouclier Renforcé", "Bloque 15 points de dégâts.", "Def", "15"));
     deck.addCard(Card("Barrière Énergétique", "Bloque 20 points de dégâts.", "Def", "20"));
 
+
+
     // Cartes de bonus
-    deck.addCard(Card("Boost d'Alcor", "Double les dégâts infligés par Goldorak pendant 1 tour.", "Bonus", "Dégâts * 2"));
-    deck.addCard(Card("Soutien de Vénusia", "Double les PV restaurés par Goldorak pendant 1 tour.", "Bonus", "Heal * 2"));
+    deck.addCard(Card("Boost d'Alcor", "Rejouer directement et vos dégats seront doublés", "Bonus", "Dégâts * 2"));
+    deck.addCard(Card("Soutien de Venusia", "Double les PV restaurés par Goldorak pendant 1 tour.", "Bonus", "Heal * 2"));
+
     deck.addCard(Card("Protection d'Actarus", "Double la défense de Goldorak pendant 1 tour.", "Bonus", "Def * 2"));
+    deck.addCard(Card("Repioche Stratégique", "Permet de repiocher une carte immédiatement.", "Bonus", "Repioche"));
+    deck.addCard(Card("Repioche Stratégique", "Permet de repiocher une carte immédiatement.", "Bonus", "Repioche"));
+    deck.addCard(Card("Repioche Stratégique", "Permet de repiocher une carte immédiatement.", "Bonus", "Repioche"));
+    deck.addCard(Card("Repioche Stratégique", "Permet de repiocher une carte immédiatement.", "Bonus", "Repioche"));
     deck.addCard(Card("Repioche Stratégique", "Permet de repiocher une carte immédiatement.", "Bonus", "Repioche"));
 
     enemyDeck.addCard(Card("Soin Basique", "Restaure 10 points de vie à Goldorak.", "PV", "10"));
     enemyDeck.addCard(Card("Réparation Mineure", "Restaure 15 points de vie à Goldorak.", "PV", "15"));
     enemyDeck.addCard(Card("Restauration Complète", "Restaure 20 points de vie à Goldorak.", "PV", "20"));
 
+    enemyDeck.addCard(Card("Soin Basique", "Restaure 10 points de vie à Goldorak.", "PV", "10"));
+    enemyDeck.addCard(Card("Réparation Mineure", "Restaure 15 points de vie à Goldorak.", "PV", "15"));
+    enemyDeck.addCard(Card("Restauration Complète", "Restaure 20 points de vie à Goldorak.", "PV", "20"));
+
+
+
+    enemyDeck.addCard(Card("Laser Basique", "Inflige 10 points de dégâts à l'ennemi.", "Att", "15"));
+    enemyDeck.addCard(Card("Laser Amélioré", "Inflige 15 points de dégâts à l'ennemi.", "Att", "20"));
+    enemyDeck.addCard(Card("Tir Puissant", "Inflige 20 points de dégâts à l'ennemi.", "Att", "25"));
+
     enemyDeck.addCard(Card("Laser Basique", "Inflige 10 points de dégâts à l'ennemi.", "Att", "15"));
     enemyDeck.addCard(Card("Laser Amélioré", "Inflige 15 points de dégâts à l'ennemi.", "Att", "20"));
     enemyDeck.addCard(Card("Tir Puissant", "Inflige 20 points de dégâts à l'ennemi.", "Att", "25"));
@@ -58,6 +87,18 @@ GameController::GameController() : selectedCardIndex(-1), player(100) {
     enemyDeck.addCard(Card("Laser Basique", "Inflige 10 points de dégâts à l'ennemi.", "Att", "15"));
     enemyDeck.addCard(Card("Laser Amélioré", "Inflige 15 points de dégâts à l'ennemi.", "Att", "20"));
     enemyDeck.addCard(Card("Tir Puissant", "Inflige 20 points de dégâts à l'ennemi.", "Att", "25"));
+
+
+    enemyDeck.addCard(Card("Bouclier Léger", "Bloque 10 points de dégâts.", "Def", "10"));
+    enemyDeck.addCard(Card("Bouclier Renforcé", "Bloque 15 points de dégâts.", "Def", "15"));
+    enemyDeck.addCard(Card("Barrière Énergétique", "Bloque 20 points de dégâts.", "Def", "20"));
+
+    enemyDeck.addCard(Card("Bouclier Léger", "Bloque 10 points de dégâts.", "Def", "10"));
+    enemyDeck.addCard(Card("Bouclier Renforcé", "Bloque 15 points de dégâts.", "Def", "15"));
+    enemyDeck.addCard(Card("Barrière Énergétique", "Bloque 20 points de dégâts.", "Def", "20"));
+
+
+
 
     enemyDeck.shuffle();
 }
@@ -105,10 +146,16 @@ void GameController::handleCardClick(const sf::Vector2i& mousePos) {
             // Mettre à jour le texte de la situation en fonction de la carte jouée
             if (drawnCards[selectedCardIndex].getType() == "Att") {
                 int damage = std::stoi(drawnCards[selectedCardIndex].getValue());
+                if (isArchorActive) {
+                    damage *= 2;  // Double les dégâts
+                }
                 std::string situationText = "Vous attaquez l'ennemi avec " + drawnCards[selectedCardIndex].getName() + " infligeant " + std::to_string(damage) + " dégâts.";
                 view.updateSituationText(situationText);  // Mise à jour du texte dans la situation
             } else if (drawnCards[selectedCardIndex].getType() == "PV") {
                 int healing = std::stoi(drawnCards[selectedCardIndex].getValue());
+                 if (isVenusiaActive) {
+                    healing *= 2;  // Double les dégâts
+                }
                 std::string situationText = "Vous vous soignez avec " + drawnCards[selectedCardIndex].getName() + " et restaurez " + std::to_string(healing) + " points de vie.";
                 view.updateSituationText(situationText);  // Mise à jour du texte dans la situation
             } else if (drawnCards[selectedCardIndex].getType() == "Def") {
@@ -117,6 +164,9 @@ void GameController::handleCardClick(const sf::Vector2i& mousePos) {
 
                 std::string situationText = "Vous vous défendez avec " + drawnCards[selectedCardIndex].getName() +
                                 ", bloquant jusqu'à " + std::to_string(defenseValue) + " dégâts pendant ce tour.";
+                view.updateSituationText(situationText);  // Mise à jour du texte dans la situation
+            } else if (drawnCards[selectedCardIndex].getType() == "Bonus") {
+                std::string situationText = "Vous activez un bonus avec " + drawnCards[selectedCardIndex].getName();
                 view.updateSituationText(situationText);  // Mise à jour du texte dans la situation
             } else if (drawnCards[selectedCardIndex].getType() == "Bonus") {
                 std::string situationText = "Vous activez un bonus avec " + drawnCards[selectedCardIndex].getName();
@@ -161,9 +211,15 @@ void GameController::handleEvents() {
                         // Le joueur termine son tour
                         if (selectedCardIndex >= 0 && selectedCardIndex < static_cast<int>(drawnCards.size())) {
                             playPlayerTurn();
-                            isEnemyTurnReady = true; // Préparer pour le tour de l'ennemi
-                            view.updateSituationText("Tour de l'ennemi. Cliquez pour continuer.");
-                            canInteractWithCards = false; // Désactiver les interactions pendant le message
+                            if(isArchorActive==false && isVenusiaActive==false){
+                                    isEnemyTurnReady = true;
+                                    view.updateSituationText("Tour de l'ennemi. Cliquez pour continuer.");
+                                    canInteractWithCards = false;
+                            }
+
+                            //canInteractWithCards=true;
+
+                            // Désactiver les interactions pendant le message
                         } else {
                             std::cout << "Aucune carte sélectionnée." << std::endl;
                         }
@@ -191,20 +247,54 @@ void GameController::handleEvents() {
 void GameController::playPlayerTurn() {
     if (drawnCards[selectedCardIndex].getType() == "Att") {
         int damage = std::stoi(drawnCards[selectedCardIndex].getValue());
+        if (isArchorActive) {
+            damage *= 2;
+            isArchorActive = false;  // Désactiver le boost après l'attaque
+        }
         enemy.takeDamage(damage);
         std::cout << "Vous attaquez l'ennemi avec " << drawnCards[selectedCardIndex].getName()
                   << ", infligeant " << damage << " dégâts." << std::endl;
 
     } else if (drawnCards[selectedCardIndex].getType() == "PV") {
         int healing = std::stoi(drawnCards[selectedCardIndex].getValue());
+        if (isVenusiaActive) {
+            healing *= 2;
+            isVenusiaActive = false;  // Désactiver le boost après l'attaque
+        }
         player.heal(healing);
+        enemy.takeDamage(0);
         std::cout << "Vous vous soignez avec " << drawnCards[selectedCardIndex].getName()
                   << ", récupérant " << healing << " PV." << std::endl;
     }else if (drawnCards[selectedCardIndex].getType() == "Def") {
     int defenseValue = std::stoi(drawnCards[selectedCardIndex].getValue());
     player.applyDefense(defenseValue);
+    enemy.takeDamage(0);
     std::cout << "Vous vous défendez avec " << drawnCards[selectedCardIndex].getName()
               << ", bloquant jusqu'à " << defenseValue << " dégâts." << std::endl;
+    } else if (drawnCards[selectedCardIndex].getType() == "Bonus" && drawnCards[selectedCardIndex].getName() == "Boost d'Alcor") {
+        // Si la carte "Boost d'Alcor" est activée
+        std::cout << "Vous activez Boost d'Alcor. Vous pouvez continuer à jouer." << std::endl;
+        isArchorActive = true; // Activer l'effet de boost pour le prochain tour
+        // Garder le tour du joueur actif
+        view.updateHealthDisplay(player.getHealth(), enemy.getHealth());
+        drawnCards.erase(drawnCards.begin() + selectedCardIndex);
+        if (!deck.isEmpty()) {
+            drawnCards.push_back(deck.drawCard());
+        }
+        selectedCardIndex = -1;
+        return; // Sortir de la méthode pour ne pas passer au tour de l'ennemi
+    }else if (drawnCards[selectedCardIndex].getType() == "Bonus" && drawnCards[selectedCardIndex].getName() == "Soutien de Venusia") {
+        // Si la carte "Boost d'Alcor" est activée
+        std::cout << "Vous activez Soutien de Venusia. Vous pouvez continuer à jouer." << std::endl;
+        isVenusiaActive = true; // Activer l'effet de boost pour le prochain tour
+        // Garder le tour du joueur actif
+        view.updateHealthDisplay(player.getHealth(), enemy.getHealth());
+        drawnCards.erase(drawnCards.begin() + selectedCardIndex);
+        if (!deck.isEmpty()) {
+            drawnCards.push_back(deck.drawCard());
+        }
+        selectedCardIndex = -1;
+        return; // Sortir de la méthode pour ne pas passer au tour de l'ennemi
     }
 
 
@@ -237,12 +327,14 @@ void GameController::enemyTurn() {
         } else if (enemyCard.getType() == "PV") {
             int healing = std::stoi(enemyCard.getValue());
             enemy.heal(healing);
+            player.takeDamage(0);
             enemyActionText = "L'ennemi se soigne avec " + enemyCard.getName() +
                               ", récupérant " + std::to_string(healing) + " PV.";
             std::cout << enemyActionText << std::endl;
         }else if (enemyCard.getType() == "Def") {
             int defenseValue = std::stoi(enemyCard.getValue());
             enemy.applyDefense(defenseValue);
+            player.takeDamage(0);
             enemyActionText = "L'ennemi se défend avec " + enemyCard.getName() +
                       ", bloquant jusqu'à " + std::to_string(defenseValue) + " dégâts.";
             std::cout << enemyActionText << std::endl;
@@ -269,11 +361,7 @@ void GameController::update() {
         std::cout << "Vous avez été vaincu !" << std::endl;
         // Vous pouvez ajouter des actions supplémentaires pour finir le jeu ici
     }
-    if (isPlayerTurn) {
-        player.resetDefense();
-    } else {
-        enemy.resetDefense();
-    }
+
 }
 
 void GameController::render() {

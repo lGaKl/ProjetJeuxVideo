@@ -4,20 +4,42 @@ Player::Player(int initialHealth) : health(initialHealth),defense(0) {}
 
 
 void Player::takeDamage(int damage) {
-    // Réduction des dégâts par le bouclier
-    int effectiveDamage = std::max(0, damage - defense);
+    // Affichage pour vérifier les valeurs initiales
+    std::cout << "Attaque ennemie: " << damage << ", Défense: " << defense << ", PV avant: " << health << std::endl;
 
-    // Réduction de la vie après application du bouclier
-    health = std::max(0, health - effectiveDamage);
+    if (defense > 0) {
+        if (damage <= defense) {
+            // Si l'attaque est inférieure ou égale à la défense, la défense absorbe tous les dégâts
+            std::cout << "Défense > Attaque : La défense absorbe tous les dégâts." << std::endl;
+            health -= defense;
+            defense = 0; // La défense est épuisée
+        } else if (damage > defense) {
+            // Si l'attaque est plus grande que la défense, on applique les dégâts restants
+            std::cout << "Attaque > Défense : Dégâts après réduction par la défense: " << (damage - defense) << std::endl;
+            health -= damage ;
+            defense = 0; // La défense est épuisée après avoir absorbé une partie des dégâts
+        }
+    } else if (damage == 0) {
+        // Si l'ennemi n'attaque pas, on consomme la défense
+        std::cout << "L'ennemi n'a pas attaqué : La défense est consommée sans infliger de dégâts." << std::endl;
+        health -= defense;
+        defense = 0; // La défense est consommée
+    } else {
+        // Si aucune défense, on applique directement les dégâts
+        std::cout << "Aucune défense : Dégâts appliqués directement." << std::endl;
+        health -= damage;
+    }
 
-    // Réduction du bouclier (reste à 0 si négatif)
-    defense = std::max(0, defense - damage);
+    // Ne jamais laisser la santé du joueur inférieure à 0
+    health = std::max(0, health);
 
-    // Afficher les informations
-    std::cout << "Player prend " << effectiveDamage
-              << " dégâts (PV : " << health << ", Bouclier restant : " << defense << ")"
-              << std::endl;
+    // Affichage pour vérifier la santé après les dégâts
+    std::cout << "PV après dégâts: " << health << std::endl;
 }
+
+
+
+
 void Player::heal(int amount){
     health += amount;
     if (health > 100) health = 100;
@@ -28,16 +50,6 @@ void Player::applyDefense(int defenseValue) {
     health += defense;
 }
 
-void Player::resetDefense() {
-    // Si la défense est positive, on ajuste les points de vie
-    if (defense > 0) {
-        // Réduire les points de vie si les dégâts surpassent le bouclier
-        int remainingDamage = -defense; // Le surplus de dégâts non absorbés
-        health = std::max(0, health - std::max(0, remainingDamage));
 
-        // Réinitialiser la défense à 0
-        defense = 0;
-    }
-}
 
 int Player::getHealth() const{return health;}
