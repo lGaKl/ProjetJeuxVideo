@@ -77,6 +77,18 @@
 		<Unit filename="Model/Deck.h">
 			<Option virtualFolder="Model/" />
 		</Unit>
+		<Unit filename="Model/DeckEnemy.cpp">
+			<Option virtualFolder="Model/" />
+		</Unit>
+		<Unit filename="Model/DeckEnemy.h">
+			<Option virtualFolder="Model/" />
+		</Unit>
+		<Unit filename="Model/Enemy.cpp">
+			<Option virtualFolder="Model/" />
+		</Unit>
+		<Unit filename="Model/Enemy.h">
+			<Option virtualFolder="Model/" />
+		</Unit>
 		<Unit filename="Model/Player.cpp">
 			<Option virtualFolder="Model/" />
 		</Unit>

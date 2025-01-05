@@ -4,12 +4,15 @@
 class Player{
 private:
     int health;
-
+    int defense;
 public:
     Player(int initialHealth);
     void takeDamage(int damage);
     void heal(int amout);
     int getHealth() const;
+    void applyDefense(int defenseValue);
+
+
 };
 
 #endif // PLAYER_H
