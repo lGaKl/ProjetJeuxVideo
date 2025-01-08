@@ -97,180 +97,179 @@ enemyDeck.shuffle();
 }
 
 void GameController::run() {
-    MenuView menuView(view.getWindow());
-    bool gameStarted = false;
+    MenuView menuView(view.getWindow()); // Initialize the menu view using the main game window.
+    bool gameStarted = false;           // Flag to track whether the game has started.
 
-    // Boucle pour l'écran d'accueil
+    // Loop for the main menu screen.
     while (view.getWindow().isOpen() && !gameStarted) {
-        sf::Event event;
+        sf::Event event; // Event object to capture user interactions.
+
+        // Poll events from the window.
         while (view.getWindow().pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                // Close the window if the close event is triggered.
                 view.getWindow().close();
             } else if (event.type == sf::Event::MouseMoved) {
-                // Mettre à jour l'état du survol
+                // Update the hover state of the "Start Game" button based on the mouse position.
                 menuView.updateHoverState(sf::Mouse::getPosition(view.getWindow()));
             } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                // Check if the "Start Game" button is clicked.
                 if (menuView.isStartButtonClicked(sf::Mouse::getPosition(view.getWindow()))) {
-                    gameStarted = true;
+                    gameStarted = true; // Set the flag to start the game.
                 }
             }
         }
+
+        // Render the menu screen.
         menuView.render();
     }
 
-    // Lancer le jeu après l'écran d'accueil
-    deck.shuffle();
-    drawnCards.clear();
+    // Initialize the game once the menu screen is exited.
+    deck.shuffle();               // Shuffle the deck before the game starts.
+    drawnCards.clear();           // Clear any previously drawn cards.
+
+    // Draw 4 cards from the shuffled deck for the initial hand.
     for (int i = 0; i < 4; ++i) {
         if (!deck.isEmpty()) {
             drawnCards.push_back(deck.drawCard());
         }
     }
 
+    // Main game loop.
     while (view.isWindowOpen()) {
-        handleEvents();
-        update();
-        render();
+        handleEvents(); // Handle user input and interactions.
+        update();       // Update the game state.
+        render();       // Render the current frame.
     }
 }
 
+// Handles the interaction when a card is clicked.
 void GameController::handleCardClick(const sf::Vector2i& mousePos) {
-    float xPos = 500.0f;  // Initial X position for the cards
-    float yPos = 700.0f;  // Initial Y position for the cards
-    float cardWidth = 200.0f;  // Card width
-    float cardHeight = 250.0f; // Card height
-    float padding = 20.0f;  // Spacing between cards
+    float xPos = 500.0f;  // Initial X position for the cards.
+    float yPos = 700.0f;  // Initial Y position for the cards.
+    float cardWidth = 200.0f;  // Width of each card.
+    float cardHeight = 250.0f; // Height of each card.
+    float padding = 20.0f;  // Space between cards.
 
-    // Loop through the displayed cards
+    // Loop through all displayed cards.
     for (size_t i = 0; i < drawnCards.size(); ++i) {
-        // Calculate the area of the current card
+        // Define the area occupied by the current card.
         sf::FloatRect cardBounds(xPos, yPos, cardWidth, cardHeight);
 
-        // Check if the mouse position is within the bounds of this card
+        // Check if the mouse click is within the bounds of the current card.
         if (cardBounds.contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
-            selectedCardIndex = static_cast<int>(i); // Update the selected card index
+            selectedCardIndex = static_cast<int>(i); // Set the index of the selected card.
 
-            // Update the situation text based on the played card
-            if (drawnCards[selectedCardIndex].getType() == "Att") {
+            // Update the game situation text based on the card type.
+            if (drawnCards[selectedCardIndex].getType() == "Att") { // Attack card.
                 int damage = std::stoi(drawnCards[selectedCardIndex].getValue());
                 if (isArchorActive) {
-                    damage *= 2;  // Double the damage
+                    damage *= 2;  // Double the damage if Archor bonus is active.
                 }
-                std::string situationText = "You attack the enemy with " + drawnCards[selectedCardIndex].getName() + " dealing " + std::to_string(damage) + " damage.";
-                view.updateSituationText(situationText);  // Update the situation text
-            } else if (drawnCards[selectedCardIndex].getType() == "HP") {
+                std::string situationText = "You attack the enemy with " + drawnCards[selectedCardIndex].getName() +
+                                            " dealing " + std::to_string(damage) + " damage.";
+                view.updateSituationText(situationText);
+            } else if (drawnCards[selectedCardIndex].getType() == "HP") { // Healing card.
                 int healing = std::stoi(drawnCards[selectedCardIndex].getValue());
                 if (isVenusiaActive) {
-                    healing *= 2;  // Double the healing
+                    healing *= 2;  // Double the healing if Venusia bonus is active.
                 }
-                std::string situationText = "You heal yourself with " + drawnCards[selectedCardIndex].getName() + " restoring " + std::to_string(healing) + " health points.";
-                view.updateSituationText(situationText);  // Update the situation text
-            } else if (drawnCards[selectedCardIndex].getType() == "Def") {
+                std::string situationText = "You heal yourself with " + drawnCards[selectedCardIndex].getName() +
+                                            " restoring " + std::to_string(healing) + " health points.";
+                view.updateSituationText(situationText);
+            } else if (drawnCards[selectedCardIndex].getType() == "Def") { // Defense card.
                 int defenseValue = std::stoi(drawnCards[selectedCardIndex].getValue());
                 std::string situationText = "You defend yourself with " + drawnCards[selectedCardIndex].getName() +
                                              ", blocking up to " + std::to_string(defenseValue) + " damage this turn.";
-                view.updateSituationText(situationText);  // Update the situation text
-            } else if (drawnCards[selectedCardIndex].getType() == "Bonus") {
+                view.updateSituationText(situationText);
+            } else if (drawnCards[selectedCardIndex].getType() == "Bonus") { // Bonus card.
                 std::string situationText = "You activate a bonus with " + drawnCards[selectedCardIndex].getName();
-                view.updateSituationText(situationText);  // Update the situation text
+                view.updateSituationText(situationText);
             }
 
-            return; // Stop here as a card has been selected
+            return; // Exit once a card is selected.
         }
 
-        // Update xPos for the next card
+        // Update X position for the next card.
         xPos += cardWidth + padding;
     }
 
-    // If no card was clicked, reset the selection
+    // If no card is selected, reset the selection.
     selectedCardIndex = -1;
     std::cout << "No card selected." << std::endl;
 }
 
+// Handles all events in the game (mouse, keyboard, window actions).
 void GameController::handleEvents() {
     sf::Event event;
-    // Poll all events from the window
+
+    // Poll events from the window.
     while (view.getWindow().pollEvent(event)) {
-        // Handle window close event
         if (event.type == sf::Event::Closed) {
+            // Close the game window if the close event is triggered.
             view.getWindow().close();
-        }
-        // Handle mouse button press event
-        else if (event.type == sf::Event::MouseButtonPressed) {
+        } else if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
-                // Get the mouse position relative to the game window
+                // Get the mouse position relative to the game window.
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(view.getWindow());
 
-
-                // Get the position and radius of the validation circle
+                // Get the position and radius of the validation circle.
                 sf::Vector2f circlePosition = view.getValidationCircle().getPosition();
                 float radius = view.getValidationCircle().getRadius();
 
-                // Check if the mouse click is inside the validation circle
+                // Check if the mouse click is inside the validation circle.
                 if (std::pow(mousePosition.x - (circlePosition.x + radius), 2) +
                     std::pow(mousePosition.y - (circlePosition.y + radius), 2) <=
                     std::pow(radius, 2)) {
 
-                    // Handle enemy's turn if ready
+                    // Handle the enemy's turn if ready.
                     if (isEnemyTurnReady) {
-                        enemyTurn(); // Enemy executes its turn
-                        isEnemyTurnReady = false; // Reset for the next round
-                        canInteractWithCards = true; // Re-enable interactions after enemy's turn
+                        enemyTurn();                  // Execute the enemy's turn.
+                        isEnemyTurnReady = false;    // Reset for the next round.
+                        canInteractWithCards = true; // Enable interactions for the next turn.
                     } else {
-                        // Handle end of the player's turn
+                        // Handle the player's turn if a card is selected.
                         if (selectedCardIndex >= 0 && selectedCardIndex < static_cast<int>(drawnCards.size())) {
-                            playPlayerTurn(); // Execute the player's turn with the selected card
+                            playPlayerTurn(); // Execute the player's turn with the selected card.
 
-                            // If no active bonuses, switch to enemy's turn
+                            // If no active bonuses, switch to the enemy's turn.
                             if (!isArchorActive && !isVenusiaActive) {
                                 isEnemyTurnReady = true;
                                 view.updateSituationText("Enemy's turn. Click to continue.");
-                                canInteractWithCards = false; // Disable interactions during enemy's turn
+                                canInteractWithCards = false; // Disable interactions during the enemy's turn.
                             }
                         } else {
                             std::cout << "No card selected." << std::endl;
                         }
                     }
-                }
-                // Handle card interaction if not clicking on the validation circle
-                else if (event.type == sf::Event::MouseButtonPressed) {
-                    if (event.mouseButton.button == sf::Mouse::Left) {
-                        // Position de la souris
-                        sf::Vector2i mousePosition = sf::Mouse::getPosition(view.getWindow());
-
-                        // Vérifier si le clic est sur la flèche
-                        if (view.getBackArrowBounds().contains(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y))) {
-                            goToMenu();
-                            return;
-                        }
-                        // Autres interactions (cartes, validation, etc.)
-                        handleCardClick(mousePosition);
+                } else {
+                    // Handle interactions with cards or the "Back to Menu" button.
+                    if (view.getBackArrowBounds().contains(static_cast<float>(mousePosition.x),
+                                                           static_cast<float>(mousePosition.y))) {
+                        goToMenu(); // Navigate back to the menu.
+                        return;
                     }
+                    handleCardClick(mousePosition); // Handle card clicks.
                 }
             }
-        }
-        // Handle keyboard input for navigation
-        else if (event.type == sf::Event::KeyPressed) {
-            // Allow shortcuts only when interactions are enabled
+        } else if (event.type == sf::Event::KeyPressed) {
+            // Allow navigation shortcuts when interactions are enabled.
             if (canInteractWithCards) {
                 if (event.key.code == sf::Keyboard::Left) {
-                    // Navigate to the previous card
+                    // Navigate to the previous card.
                     selectedCardIndex = std::max(0, selectedCardIndex - 1);
                 } else if (event.key.code == sf::Keyboard::Right) {
-                    // Navigate to the next card
+                    // Navigate to the next card.
                     selectedCardIndex = std::min(static_cast<int>(drawnCards.size() - 1), selectedCardIndex + 1);
                 }
             }
-        }
-        else if (event.type == sf::Event::MouseMoved) {
+        } else if (event.type == sf::Event::MouseMoved) {
+            // Update the hover state of the validation circle based on the mouse position.
             sf::Vector2i mousePosition = sf::Mouse::getPosition(view.getWindow());
             view.updateValidationCircleHover(mousePosition);
         }
     }
 }
-
-
-
 
 // turn of the player
 void GameController::playPlayerTurn() {
@@ -395,172 +394,185 @@ void GameController::enemyTurn() {
     }
 }
 
+// Updates the game state and checks for victory or defeat conditions.
 void GameController::update() {
+    // Check if the enemy has been defeated.
     if (enemy.getHealth() <= 0) {
         std::cout << "The enemy has been defeated!" << std::endl;
-        displayEndScreen(true); // Appelle l'écran de fin pour la victoire
-    } else if (player.getHealth() <= 0) {
+        displayEndScreen(true); // Display the victory screen.
+    }
+    // Check if the player has been defeated.
+    else if (player.getHealth() <= 0) {
         std::cout << "You have been defeated!" << std::endl;
-        displayEndScreen(false); // Appelle l'écran de fin pour la défaite
+        displayEndScreen(false); // Display the defeat screen.
     }
 }
 
+// Displays the end screen based on whether the player won or lost.
 void GameController::displayEndScreen(bool isVictory) {
+    // Set the background image depending on the outcome.
     std::string backgroundImagePath = isVictory ? "Image/Crocofest_sexy.png" : "Image/GoldoCPC_GameOver2.png";
     EndView endView(view.getWindow(), backgroundImagePath);
 
+    // Loop to display the end screen and handle interactions.
     while (view.getWindow().isOpen()) {
         sf::Event event;
+
+        // Poll events from the window.
         while (view.getWindow().pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                // Close the window if the close event is triggered.
                 view.getWindow().close();
                 return;
-            } else if (event.type == sf::Event::MouseMoved) {
+            }
+            // Update the hover state for the "Go to Menu" button.
+            else if (event.type == sf::Event::MouseMoved) {
                 endView.updateHoverState(sf::Mouse::getPosition(view.getWindow()));
-            } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            }
+            // Handle clicks on the "Go to Menu" button.
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 if (endView.isMenuButtonClicked(sf::Mouse::getPosition(view.getWindow()))) {
-                    goToMenu();
+                    goToMenu(); // Navigate back to the main menu.
                     return;
                 }
             }
         }
+
+        // Render the end screen.
         endView.render();
     }
 }
 
+// Renders the current game state, including the player, enemy, and cards.
 void GameController::render() {
-    // Reset the window before redrawing (clear the screen)
+    // Clear the screen to prepare for the next frame.
     view.getWindow().clear();
 
-    // Display the player's information (e.g., showing the health)
+    // Render the player, enemy, and other UI elements.
     view.render(player, drawnCards, selectedCardIndex, enemy);
 
-    // Render the drawn cards and highlight the selected one
-    view.renderCards(   drawnCards, selectedCardIndex);
+    // Render the player's cards and highlight the selected card.
+    view.renderCards(drawnCards, selectedCardIndex);
 
-
-    // Display the elements on the window
-    //view.getWindow().display();
+    // Uncomment below if audio support is added.
     /*
-   static bool isSoundPlaying = false;
+    static bool isSoundPlaying = false;
 
     if (!isSoundPlaying) {
-        PlaySound(TEXT("Intro.wav"), NULL, SND_ASYNC | SND_LOOP);  // Play sound in a loop
+        PlaySound(TEXT("Intro.wav"), NULL, SND_ASYNC | SND_LOOP);  // Play sound in a loop.
         isSoundPlaying = true;
     }
     */
-
 }
 
+// Resets the game state and navigates to the main menu.
 void GameController::goToMenu() {
-
+    // Reset the game state to its initial values.
     resetGame();
-    MenuView menuView(view.getWindow());
+    MenuView menuView(view.getWindow()); // Initialize the menu view.
 
+    // Loop to display the menu screen and handle interactions.
     while (view.getWindow().isOpen()) {
         sf::Event event;
+
+        // Poll events from the window.
         while (view.getWindow().pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
+                // Close the window if the close event is triggered.
                 view.getWindow().close();
                 return;
-            } else if (event.type == sf::Event::MouseMoved) {
+            }
+            // Update the hover state for the "Start Game" button.
+            else if (event.type == sf::Event::MouseMoved) {
                 menuView.updateHoverState(sf::Mouse::getPosition(view.getWindow()));
-            } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            }
+            // Handle clicks on the "Start Game" button.
+            else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 if (menuView.isStartButtonClicked(sf::Mouse::getPosition(view.getWindow()))) {
-                    return; // Quitte la boucle pour retourner au jeu
+                    return; // Exit the loop to return to the game.
                 }
             }
         }
+
+        // Render the main menu.
         menuView.render();
     }
 }
 
+// Resets the game state, including the player, enemy, decks, and game variables.
 void GameController::resetGame() {
-    // Réinitialiser le joueur et l'ennemi
-    player = Player(100);  // Reset les points de vie du joueur
-    enemy = Enemy(100);    // Reset les points de vie de l'ennemi
+    // Reset the player's health.
+    player = Player(100);  // Player starts with 100 health points.
 
-    // Réinitialiser le deck du joueur
+    // Reset the enemy's health.
+    enemy = Enemy(100);  // Enemy starts with 100 health points.
+
+    // Clear the player's deck and rebuild it with predefined cards.
     deck.clear();
-    //Player's deck
-    // Heal cards
-    deck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
-    deck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
-    deck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
 
-    deck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
-    deck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
-    deck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
+    // Add healing cards to the player's deck.
+    deck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10", "Image/Old.png"));
+    deck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15", "Image/Actarus.png"));
+    deck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20", "Image/prof.png"));
 
-    // Attack cards (Att)
-    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+    // Duplicate some cards to ensure variety.
+    deck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10", "Image/Old.png"));
+    deck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15", "Image/Actarus.png"));
+    deck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20", "Image/prof.png"));
 
-    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+    // Add attack cards to the player's deck.
+    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15", "Image/Cornofulgure.png"));
+    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20", "Image/Fulguropoing.png"));
+    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25", "Image/Asterohache.png"));
 
-    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+    // Add duplicate attack cards.
+    for (int i = 0; i < 3; ++i) {
+        deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15", "Image/Cornofulgure.png"));
+        deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20", "Image/Fulguropoing.png"));
+        deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25", "Image/Asterohache.png"));
+    }
 
-    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+    // Add defense cards to the player's deck.
+    deck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10", "Image/shield1.png"));
+    deck.addCard(CardFactory::createDefenseCard("Energy Shield", "Blocks 15 damage points.", "Def", "15", "Image/shield2.png"));
+    deck.addCard(CardFactory::createDefenseCard("Aegis Véga", "Blocks 20 damage points.", "Def", "20", "Image/shield3.png"));
 
-    // Defense cards (Def)
-    deck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
-    deck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
-    deck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+    // Duplicate defense cards.
+    deck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10", "Image/shield1.png"));
+    deck.addCard(CardFactory::createDefenseCard("Energy Shield", "Blocks 15 damage points.", "Def", "15", "Image/shield2.png"));
+    deck.addCard(CardFactory::createDefenseCard("Aegis Véga", "Blocks 20 damage points.", "Def", "20", "Image/shield3.png"));
 
-    deck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
-    deck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
-    deck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+    // Add bonus cards to the player's deck.
+    deck.addCard(CardFactory::createBonusCard("Alcor's Boost", "Play again immediately, and your damage will be doubled.", "Bonus", "Dmg*2", "Image/alcor.png"));
+    deck.addCard(CardFactory::createBonusCard("Venusia's Support", "Doubles health restored by Goldorak for 1 turn.", "Bonus", "Hp*2", "Image/venusia.png"));
 
-    // Bonus cards
-    deck.addCard(CardFactory::createBonusCard("Alcor's Boost", "Play again immediately, and your damage will be doubled.", "Bonus", "Dmg*2","Image/alcor.png"));
-    deck.addCard(CardFactory::createBonusCard("Venusia's Support", "Doubles health restored by Goldorak for 1 turn.", "Bonus", "Hp*2","Image/venusia.png"));
-
+    // Clear the enemy's deck and rebuild it with similar cards.
     enemyDeck.clear();
-    // Enemy's deck
-    enemyDeck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
-    enemyDeck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
-    enemyDeck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
 
-    enemyDeck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
-    enemyDeck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
-    enemyDeck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
+    // Add healing, attack, and defense cards to the enemy's deck.
+    for (int i = 0; i < 2; ++i) {
+        enemyDeck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10", "Image/Old.png"));
+        enemyDeck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15", "Image/Actarus.png"));
+        enemyDeck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20", "Image/prof.png"));
 
-    // Attack cards (Att)
-    enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-    enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-    enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+        enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15", "Image/Cornofulgure.png"));
+        enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20", "Image/Fulguropoing.png"));
+        enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25", "Image/Asterohache.png"));
 
-    enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-    enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-    enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+        enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15", "Image/Cornofulgure.png"));
+        enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20", "Image/Fulguropoing.png"));
+        enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25", "Image/Asterohache.png"));
 
-    enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-    enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-    enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+        enemyDeck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10", "Image/shield1.png"));
+        enemyDeck.addCard(CardFactory::createDefenseCard("Energy Shield", "Blocks 15 damage points.", "Def", "15", "Image/shield2.png"));
+        enemyDeck.addCard(CardFactory::createDefenseCard("Aegis Véga", "Blocks 20 damage points.", "Def", "20", "Image/shield3.png"));
+    }
 
-    enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
-    enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
-    enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
-
-    // Defense cards (Def)
-    enemyDeck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
-    enemyDeck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
-    enemyDeck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
-
-    enemyDeck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
-    enemyDeck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
-    enemyDeck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
-
+    // Shuffle both decks.
     deck.shuffle();
     enemyDeck.shuffle();
 
+    // Clear the list of drawn cards and draw the initial hand of 4 cards.
     drawnCards.clear();
     for (int i = 0; i < 4; ++i) {
         if (!deck.isEmpty()) {
@@ -568,12 +580,13 @@ void GameController::resetGame() {
         }
     }
 
-    // Réinitialiser les cartes sélectionnées et les états
+    // Reset game variables and states.
     selectedCardIndex = -1;
     isEnemyTurnReady = false;
     canInteractWithCards = true;
     isArchorActive = false;
     isVenusiaActive = false;
 
+    // Print a confirmation message.
     std::cout << "Game reset complete!" << std::endl;
 }
