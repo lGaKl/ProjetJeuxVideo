@@ -12,6 +12,7 @@ private:
     sf::RenderWindow window;
     sf::Font font;
     sf::Text cardPlayedText;
+    sf::Text validationCircleText;
     sf::CircleShape validationCircle;
     sf::RectangleShape situation;
     //sf::RectangleShape playerRect;       // Rectangle pour le joueur
@@ -31,6 +32,9 @@ private:
     sf::Sprite victorySprite;
     sf::Texture defeatTexture;
     sf::Sprite defeatSprite;
+    sf::Texture backArrowTexture;
+    sf::Sprite backArrowSprite;
+    sf::Text backArrowText;
 
 public:
     GameView();
@@ -46,6 +50,8 @@ public:
     void initValidationCircle();
     void displayVictoryScreen();
     void displayDefeatScreen();
+    sf::FloatRect getBackArrowBounds() const { return backArrowSprite.getGlobalBounds(); }
+    void updateValidationCircleHover(const sf::Vector2i& mousePosition);
 };
 
 #endif // GAMEVIEW_H

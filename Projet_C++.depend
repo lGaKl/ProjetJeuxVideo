@@ -1700,7 +1700,7 @@
 
 1736105888 a59f335d33e9401f1e6a4fc8c4f056f768a90
 
-1736345713 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\controller\gamecontroller.cpp
+1736368150 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\controller\gamecontroller.cpp
 	"GameController.h"
 	<SFML/Window.hpp>
 	<iostream>
@@ -1712,9 +1712,10 @@
 	<SFML/Audio.hpp>
 	"CardFactory.h"
 
-1736342110 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\controller\gamecontroller.h
+1736368197 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\controller\gamecontroller.h
 	"GameView.h"
 	"MenuView.h"
+	"EndView.h"
 	"Player.h"
 	"Deck.h"
 	"DeckEnemy.h"
@@ -1834,7 +1835,7 @@
 	<string>
 	<SFML/Graphics.hpp>
 
-1736340881 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\deck.cpp
+1736365359 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\deck.cpp
 	"Deck.h"
 	<stdexcept>
 	<random>
@@ -1842,11 +1843,11 @@
 	<algorithm>
 	<iostream>
 
-1736340881 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\deck.h
+1736365347 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\deck.h
 	<vector>
 	"Card.h"
 
-1736340881 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\deckenemy.cpp
+1736365364 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\deckenemy.cpp
 	"DeckEnemy.h"
 	<stdexcept>
 	<random>
@@ -1854,7 +1855,7 @@
 	<algorithm>
 	<iostream>
 
-1736340881 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\deckenemy.h
+1736365352 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\deckenemy.h
 	<vector>
 	"Card.h"
 
@@ -1870,13 +1871,13 @@
 
 1736340881 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\player.h
 
-1736345596 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\view\gameview.cpp
+1736368341 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\view\gameview.cpp
 	"GameView.h"
 	<iostream>
 	<sstream>
 	<random>
 
-1736345104 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\view\gameview.h
+1736368318 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\view\gameview.h
 	<SFML/Graphics.hpp>
 	"Player.h"
 	"Deck.h"
@@ -1902,4 +1903,11 @@
 
 1736340881 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\model\cardfactory.cpp
 	"CardFactory.h"
+
+1736364457 d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\view\endview.h
+	<SFML/Graphics.hpp>
+
+1736364493 source:d:\usb\ecole\bac3\c++\projet_c++\projetjv\projetjeuxvideo\view\endview.cpp
+	"EndView.h"
+	<iostream>
 

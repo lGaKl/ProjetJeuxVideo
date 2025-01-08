@@ -9,14 +9,14 @@ the player's and enemy's cards, health, validations, and card descriptions. It u
 including the characters' health, available cards, and displays text for the player regarding the game's situation.
 */
 // Constructor of GameView: initializes the window and font
-GameView::GameView() : window(sf::VideoMode(1900, 1080), "C++ Project") {
+GameView::GameView() : window(sf::VideoMode::getDesktopMode(), "C++ Project", sf::Style::Default) {
     // Loading the font
 
     std::random_device rd;  // Générateur de nombres aléatoires basé sur une source externe
     rng = std::mt19937(rd());  // Initialise le générateur avec un "seed" aléatoire
 
     window.setVerticalSyncEnabled(true);
-    if (!font.loadFromFile("Arial.ttf")) {  // Make sure you have an "arial.ttf" font in the directory or change the path
+    if (!font.loadFromFile("retro-land-mayhem.ttf")) {  // Make sure you have an "arial.ttf" font in the directory or change the path
         std::cerr << "Error loading font!" << std::endl;
     }
 
@@ -122,6 +122,28 @@ GameView::GameView() : window(sf::VideoMode(1900, 1080), "C++ Project") {
         static_cast<float>(window.getSize().x) / defeatTexture.getSize().x,
         static_cast<float>(window.getSize().y) / defeatTexture.getSize().y
     );
+
+    if (!backArrowTexture.loadFromFile("Image/backArrow.png")) {
+        std::cerr << "Erreur de chargement de l'image 'backArrow' !" << std::endl;
+    }
+
+    backArrowSprite.setTexture(backArrowTexture);
+    backArrowSprite.setPosition(20.0f, 20.0f); // Position en haut à gauche
+    backArrowSprite.setScale(1.5f, 1.5f); // Ajustez l'échelle si nécessaire
+
+    // Configurer le texte "Back to menu"
+    backArrowText.setFont(font);
+    backArrowText.setString("Back to menu");
+    backArrowText.setCharacterSize(22);
+    backArrowText.setFillColor(sf::Color::Black);
+    sf::FloatRect textBounds = backArrowText.getLocalBounds();
+
+    // Centrer le texte dans le sprite de la flèche
+    sf::FloatRect arrowBounds = backArrowSprite.getGlobalBounds();
+    backArrowText.setPosition(
+        arrowBounds.left + (arrowBounds.width - textBounds.width) / 2,
+        arrowBounds.top + (arrowBounds.height - textBounds.height) / 2 - 10
+    );
 }
 
 sf::CircleShape& GameView::getValidationCircle() {
@@ -147,13 +169,50 @@ void GameView::updateHealthDisplay(int playerHealth, int enemyHealth) {
     enemyHealthText.setString("Health: " + std::to_string(enemyHealth));
 }
 
+bool isHovered = false; // Variable pour gérer l'état de survol
 void GameView::initValidationCircle() {
+    // Initialiser le cercle
     validationCircle.setRadius(50.0f);  // Définir les propriétés du cercle
     validationCircle.setFillColor(sf::Color::Red);
     validationCircle.setOutlineColor(sf::Color::Black);
     validationCircle.setOutlineThickness(3.0f);
     validationCircle.setPosition(1600.0f, 700.0f);  // Position initiale
+
+    // Initialiser le texte
+    validationCircleText.setFont(font);
+    validationCircleText.setString("Play");
+    validationCircleText.setCharacterSize(22);
+    validationCircleText.setFillColor(sf::Color::White);
+
+    // Obtenir les dimensions du texte et du cercle
+    sf::FloatRect textBounds = validationCircleText.getLocalBounds();
+    sf::FloatRect circleBounds = validationCircle.getGlobalBounds();
+
+    // Centrer le texte dans le cercle
+    validationCircleText.setPosition(
+        circleBounds.left + (circleBounds.width - textBounds.width) / 2 - textBounds.left,
+        circleBounds.top + (circleBounds.height - textBounds.height) / 2 - textBounds.top
+    );
 }
+
+void GameView::updateValidationCircleHover(const sf::Vector2i& mousePosition) {
+    sf::FloatRect circleBounds = validationCircle.getGlobalBounds();
+
+    if (circleBounds.contains(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y))) {
+        if (!isHovered) {
+            validationCircle.setFillColor(sf::Color::Blue); // Couleur de survol : Bleu
+            validationCircleText.setFillColor(sf::Color::Yellow); // Texte en Jaune
+            isHovered = true;
+        }
+    } else {
+        if (isHovered) {
+            validationCircle.setFillColor(sf::Color::Red); // Couleur par défaut : Rouge
+            validationCircleText.setFillColor(sf::Color::White); // Texte en Blanc
+            isHovered = false;
+        }
+    }
+}
+
 void GameView::render(const Player& player, const std::vector<Card>& cards, int selectedCardIndex, const Enemy& enemy) {
     window.clear();
 
@@ -168,9 +227,14 @@ void GameView::render(const Player& player, const std::vector<Card>& cards, int 
     window.draw(enemyNameText);
     window.draw(enemyHealthText);
 
+    // Dessiner la flèche de retour
+    window.draw(backArrowSprite);
+    window.draw(backArrowText);
+
     updateHealthDisplay(player.getHealth(), enemy.getHealth());
 
     window.draw(validationCircle);
+    window.draw(validationCircleText);
     renderCards(cards, selectedCardIndex);
 
     window.draw(situation);
@@ -261,14 +325,14 @@ void GameView::renderCards(const std::vector<Card>& cards, int selectedCardIndex
         sf::Text cardName;
         cardName.setFont(font);  // Assurez-vous que la police est chargée
         cardName.setString(card.getName());
-        cardName.setCharacterSize(18);  // Taille de la police pour le nom
+        cardName.setCharacterSize(13);  // Taille de la police pour le nom
         cardName.setFillColor(sf::Color::White);  // Couleur du texte
         cardName.setPosition(xPos + 10.0f, yPos + 10.0f);  // Positionner le texte du nom à l'intérieur du rectangle
 
         sf::Text cardValue;
         cardValue.setFont(font);  // Assurez-vous que la police est chargée
         cardValue.setString(card.getValue());
-        cardValue.setCharacterSize(18);  // Taille de la police pour la valeur
+        cardValue.setCharacterSize(15);  // Taille de la police pour la valeur
         cardValue.setFillColor(sf::Color::White);  // Couleur du texte
         cardValue.setPosition(xPos + cardWidth - 60.0f, yPos + 10.0f);  // Positionner le texte de la valeur à l'intérieur du rectangle
 

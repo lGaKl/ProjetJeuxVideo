@@ -49,3 +49,7 @@ bool DeckEnemy::isEmpty() const{return cards.empty();}
 const std::vector<Card>& DeckEnemy::getCard() const {
     return cards;
 }
+
+void DeckEnemy::clear() {
+    cards.clear();
+}

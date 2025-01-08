@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 MenuView::MenuView(sf::RenderWindow& window) : window(window), isHovered(false) {
+    window.create(sf::VideoMode::getDesktopMode(), "Menu", sf::Style::Default);
     // Charger l'image de fond
     if (!backgroundTexture.loadFromFile("Image/GoldoCPC_Title_Overscan.png")) {
         std::cerr << "Erreur : Impossible de charger l'image de fond !\n";

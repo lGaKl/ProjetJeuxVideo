@@ -3,6 +3,7 @@
 
 #include "GameView.h"
 #include "MenuView.h"
+#include "EndView.h"
 #include "Player.h"
 #include "Deck.h"
 #include "DeckEnemy.h"
@@ -34,6 +35,9 @@ public:
     Player& getPlayer() { return player; }
     //Deck& getDeck() { return deck; }
     //MenuView& getMenuView { return menuView;}
+    void goToMenu();
+    void resetGame();
+    void displayEndScreen(bool isVictory);
 };
 
 #endif // GAMECONTROLLER_H

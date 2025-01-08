@@ -96,34 +96,6 @@ enemyDeck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damag
 enemyDeck.shuffle();
 }
 
-
-/*void GameController::run() {
-    //shuffle the player's cards
-    deck.shuffle();
-    drawnCards.clear();
-
-    std::cout << "Starting the card drawing loop" << std::endl;
-    // draw 4 cards
-    for (int i = 0; i < 4; ++i) {
-    if (!deck.isEmpty()) {
-        Card drawnCard = deck.drawCard();
-        drawnCards.push_back(drawnCard);
-    }
-    }
-
-    for (size_t i = 0; i < drawnCards.size(); ++i) {
-        std::cout << "Card " << (i + 1) << ": " << drawnCards[i].getName() << " - " << drawnCards[i].getDescription() << std::endl;
-    }
-
-
-    while (view.isWindowOpen()) {
-        handleEvents(); // Handles user interaction and window events
-        update(); // Updates the game state (player, cards, etc.)
-        render(); // Manages the visual display of game elements
-    }
-
-     }*/
-
 void GameController::run() {
     MenuView menuView(view.getWindow());
     bool gameStarted = false;
@@ -228,6 +200,8 @@ void GameController::handleEvents() {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 // Get the mouse position relative to the game window
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(view.getWindow());
+
+
                 // Get the position and radius of the validation circle
                 sf::Vector2f circlePosition = view.getValidationCircle().getPosition();
                 float radius = view.getValidationCircle().getRadius();
@@ -259,8 +233,19 @@ void GameController::handleEvents() {
                     }
                 }
                 // Handle card interaction if not clicking on the validation circle
-                else if (canInteractWithCards) {
-                    handleCardClick(mousePosition); // Handle potential card click
+                else if (event.type == sf::Event::MouseButtonPressed) {
+                    if (event.mouseButton.button == sf::Mouse::Left) {
+                        // Position de la souris
+                        sf::Vector2i mousePosition = sf::Mouse::getPosition(view.getWindow());
+
+                        // Vérifier si le clic est sur la flèche
+                        if (view.getBackArrowBounds().contains(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y))) {
+                            goToMenu();
+                            return;
+                        }
+                        // Autres interactions (cartes, validation, etc.)
+                        handleCardClick(mousePosition);
+                    }
                 }
             }
         }
@@ -276,6 +261,10 @@ void GameController::handleEvents() {
                     selectedCardIndex = std::min(static_cast<int>(drawnCards.size() - 1), selectedCardIndex + 1);
                 }
             }
+        }
+        else if (event.type == sf::Event::MouseMoved) {
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(view.getWindow());
+            view.updateValidationCircleHover(mousePosition);
         }
     }
 }
@@ -409,14 +398,33 @@ void GameController::enemyTurn() {
 void GameController::update() {
     if (enemy.getHealth() <= 0) {
         std::cout << "The enemy has been defeated!" << std::endl;
-        view.displayVictoryScreen();
-        sf::sleep(sf::seconds(5));  // Affiche l'écran de victoire pendant 3 secondes
-        view.getWindow().close();  // Ferme la fenêtre
+        displayEndScreen(true); // Appelle l'écran de fin pour la victoire
     } else if (player.getHealth() <= 0) {
         std::cout << "You have been defeated!" << std::endl;
-        view.displayDefeatScreen();
-        sf::sleep(sf::seconds(5));  // Affiche l'écran de défaite pendant 3 secondes
-        view.getWindow().close();  // Ferme la fenêtre
+        displayEndScreen(false); // Appelle l'écran de fin pour la défaite
+    }
+}
+
+void GameController::displayEndScreen(bool isVictory) {
+    std::string backgroundImagePath = isVictory ? "Image/Crocofest_sexy.png" : "Image/GoldoCPC_GameOver2.png";
+    EndView endView(view.getWindow(), backgroundImagePath);
+
+    while (view.getWindow().isOpen()) {
+        sf::Event event;
+        while (view.getWindow().pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                view.getWindow().close();
+                return;
+            } else if (event.type == sf::Event::MouseMoved) {
+                endView.updateHoverState(sf::Mouse::getPosition(view.getWindow()));
+            } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                if (endView.isMenuButtonClicked(sf::Mouse::getPosition(view.getWindow()))) {
+                    goToMenu();
+                    return;
+                }
+            }
+        }
+        endView.render();
     }
 }
 
@@ -442,4 +450,130 @@ void GameController::render() {
     }
     */
 
+}
+
+void GameController::goToMenu() {
+
+    resetGame();
+    MenuView menuView(view.getWindow());
+
+    while (view.getWindow().isOpen()) {
+        sf::Event event;
+        while (view.getWindow().pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                view.getWindow().close();
+                return;
+            } else if (event.type == sf::Event::MouseMoved) {
+                menuView.updateHoverState(sf::Mouse::getPosition(view.getWindow()));
+            } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                if (menuView.isStartButtonClicked(sf::Mouse::getPosition(view.getWindow()))) {
+                    return; // Quitte la boucle pour retourner au jeu
+                }
+            }
+        }
+        menuView.render();
+    }
+}
+
+void GameController::resetGame() {
+    // Réinitialiser le joueur et l'ennemi
+    player = Player(100);  // Reset les points de vie du joueur
+    enemy = Enemy(100);    // Reset les points de vie de l'ennemi
+
+    // Réinitialiser le deck du joueur
+    deck.clear();
+    //Player's deck
+    // Heal cards
+    deck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
+    deck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
+    deck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
+
+    deck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
+    deck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
+    deck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
+
+    // Attack cards (Att)
+    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+
+    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+
+    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+
+    deck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+    deck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+    deck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+
+    // Defense cards (Def)
+    deck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
+    deck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
+    deck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+
+    deck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
+    deck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
+    deck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+
+    // Bonus cards
+    deck.addCard(CardFactory::createBonusCard("Alcor's Boost", "Play again immediately, and your damage will be doubled.", "Bonus", "Dmg*2","Image/alcor.png"));
+    deck.addCard(CardFactory::createBonusCard("Venusia's Support", "Doubles health restored by Goldorak for 1 turn.", "Bonus", "Hp*2","Image/venusia.png"));
+
+    enemyDeck.clear();
+    // Enemy's deck
+    enemyDeck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
+    enemyDeck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
+    enemyDeck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
+
+    enemyDeck.addCard(CardFactory::createHealCard("Makeshift Repair", "Restores 10 health points to Goldorak.", "HP", "10","Image/Old.png"));
+    enemyDeck.addCard(CardFactory::createHealCard("Actarus Repair", "Restores 15 health points to Goldorak.", "HP", "15","Image/Actarus.png"));
+    enemyDeck.addCard(CardFactory::createHealCard("Pr. Procyon Repair", "Restores 20 health points to Goldorak.", "HP", "20","Image/prof.png"));
+
+    // Attack cards (Att)
+    enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+    enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+    enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+
+    enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+    enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+    enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+
+    enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+    enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+    enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+
+    enemyDeck.addCard(CardFactory::createAttackCard("Cornofulgure", "Deals 15 damage points to the enemy.", "Att", "15","Image/Cornofulgure.png"));
+    enemyDeck.addCard(CardFactory::createAttackCard("Fulguropoing", "Deals 20 damage points to the enemy.", "Att", "20","Image/Fulguropoing.png"));
+    enemyDeck.addCard(CardFactory::createAttackCard("Asterohache", "Deals 25 damage points to the enemy.", "Att", "25","Image/Asterohache.png"));
+
+    // Defense cards (Def)
+    enemyDeck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
+    enemyDeck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
+    enemyDeck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+
+    enemyDeck.addCard(CardFactory::createDefenseCard("Light Barrier", "Blocks 10 damage points.", "Def", "10","Image/shield1.png"));
+    enemyDeck.addCard(CardFactory::createDefenseCard("Energy Shield ", "Blocks 15 damage points.", "Def", "15","Image/shield2.png"));
+    enemyDeck.addCard(CardFactory::createDefenseCard("Aegis Véga ", "Blocks 20 damage points.", "Def", "20","Image/shield3.png"));
+
+    deck.shuffle();
+    enemyDeck.shuffle();
+
+    drawnCards.clear();
+    for (int i = 0; i < 4; ++i) {
+        if (!deck.isEmpty()) {
+            drawnCards.push_back(deck.drawCard());
+        }
+    }
+
+    // Réinitialiser les cartes sélectionnées et les états
+    selectedCardIndex = -1;
+    isEnemyTurnReady = false;
+    canInteractWithCards = true;
+    isArchorActive = false;
+    isVenusiaActive = false;
+
+    std::cout << "Game reset complete!" << std::endl;
 }
