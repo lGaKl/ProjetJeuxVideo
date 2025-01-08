@@ -97,7 +97,7 @@ enemyDeck.shuffle();
 }
 
 
-void GameController::run() {
+/*void GameController::run() {
     //shuffle the player's cards
     deck.shuffle();
     drawnCards.clear();
@@ -122,7 +122,45 @@ void GameController::run() {
         render(); // Manages the visual display of game elements
     }
 
-     }
+     }*/
+
+void GameController::run() {
+    MenuView menuView(view.getWindow());
+    bool gameStarted = false;
+
+    // Boucle pour l'écran d'accueil
+    while (view.getWindow().isOpen() && !gameStarted) {
+        sf::Event event;
+        while (view.getWindow().pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                view.getWindow().close();
+            } else if (event.type == sf::Event::MouseMoved) {
+                // Mettre à jour l'état du survol
+                menuView.updateHoverState(sf::Mouse::getPosition(view.getWindow()));
+            } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                if (menuView.isStartButtonClicked(sf::Mouse::getPosition(view.getWindow()))) {
+                    gameStarted = true;
+                }
+            }
+        }
+        menuView.render();
+    }
+
+    // Lancer le jeu après l'écran d'accueil
+    deck.shuffle();
+    drawnCards.clear();
+    for (int i = 0; i < 4; ++i) {
+        if (!deck.isEmpty()) {
+            drawnCards.push_back(deck.drawCard());
+        }
+    }
+
+    while (view.isWindowOpen()) {
+        handleEvents();
+        update();
+        render();
+    }
+}
 
 void GameController::handleCardClick(const sf::Vector2i& mousePos) {
     float xPos = 500.0f;  // Initial X position for the cards

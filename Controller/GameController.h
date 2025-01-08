@@ -2,6 +2,7 @@
 #define GAMECONTROLLER_H
 
 #include "GameView.h"
+#include "MenuView.h"
 #include "Player.h"
 #include "Deck.h"
 #include "DeckEnemy.h"
@@ -9,6 +10,7 @@ class GameController {
 private:
     int selectedCardIndex;
     GameView view;
+    //MenuView menuView;
     Player player;
     Deck deck;
     DeckEnemy enemyDeck;
@@ -30,7 +32,8 @@ public:
     // Getter
     GameView& getView() { return view; }
     Player& getPlayer() { return player; }
-    Deck& getDeck() { return deck; }
+    //Deck& getDeck() { return deck; }
+    //MenuView& getMenuView { return menuView;}
 };
 
 #endif // GAMECONTROLLER_H
