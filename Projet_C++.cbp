@@ -71,6 +71,12 @@
 		<Unit filename="Model/Card.h">
 			<Option virtualFolder="Model/" />
 		</Unit>
+		<Unit filename="Model/CardFactory.cpp">
+			<Option virtualFolder="Model/" />
+		</Unit>
+		<Unit filename="Model/CardFactory.h">
+			<Option virtualFolder="Model/" />
+		</Unit>
 		<Unit filename="Model/Deck.cpp">
 			<Option virtualFolder="Model/" />
 		</Unit>

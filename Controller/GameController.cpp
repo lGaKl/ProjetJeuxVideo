@@ -407,14 +407,14 @@ void GameController::render() {
 
     // Display the elements on the window
     //view.getWindow().display();
-    /*
+
    static bool isSoundPlaying = false;
 
     if (!isSoundPlaying) {
         PlaySound(TEXT("Intro.wav"), NULL, SND_ASYNC | SND_LOOP);  // Play sound in a loop
         isSoundPlaying = true;
     }
-    */
+
 
 }
 
