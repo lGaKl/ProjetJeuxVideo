@@ -367,9 +367,6 @@ void GameController::playPlayerTurn() {
 }
 
 
-
-
-
 void GameController::enemyTurn() {
     // Check if the enemy deck is not empty
     if (!enemyDeck.isEmpty()) {
@@ -409,28 +406,19 @@ void GameController::enemyTurn() {
     }
 }
 
-
-
-
-
-
-
-
 void GameController::update() {
-    // Check if the enemy's health is less than or equal to 0
     if (enemy.getHealth() <= 0) {
         std::cout << "The enemy has been defeated!" << std::endl;
-        // End the game or display a message
-    }
-    // Check if the player's health is less than or equal to 0
-    if (player.getHealth() <= 0) {
+        view.displayVictoryScreen();
+        sf::sleep(sf::seconds(5));  // Affiche l'écran de victoire pendant 3 secondes
+        view.getWindow().close();  // Ferme la fenêtre
+    } else if (player.getHealth() <= 0) {
         std::cout << "You have been defeated!" << std::endl;
-        // You can add additional actions to finish the game here
+        view.displayDefeatScreen();
+        sf::sleep(sf::seconds(5));  // Affiche l'écran de défaite pendant 3 secondes
+        view.getWindow().close();  // Ferme la fenêtre
     }
 }
-
-
-
 
 void GameController::render() {
     // Reset the window before redrawing (clear the screen)
@@ -455,8 +443,3 @@ void GameController::render() {
     */
 
 }
-
-
-
-
-
