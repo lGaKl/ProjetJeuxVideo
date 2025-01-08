@@ -97,7 +97,7 @@ enemyDeck.shuffle();
 }
 
 
-void GameController::run() {
+/*void GameController::run() {
     //shuffle the player's cards
     deck.shuffle();
     drawnCards.clear();
@@ -122,7 +122,45 @@ void GameController::run() {
         render(); // Manages the visual display of game elements
     }
 
-     }
+     }*/
+
+void GameController::run() {
+    MenuView menuView(view.getWindow());
+    bool gameStarted = false;
+
+    // Boucle pour l'écran d'accueil
+    while (view.getWindow().isOpen() && !gameStarted) {
+        sf::Event event;
+        while (view.getWindow().pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                view.getWindow().close();
+            } else if (event.type == sf::Event::MouseMoved) {
+                // Mettre à jour l'état du survol
+                menuView.updateHoverState(sf::Mouse::getPosition(view.getWindow()));
+            } else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+                if (menuView.isStartButtonClicked(sf::Mouse::getPosition(view.getWindow()))) {
+                    gameStarted = true;
+                }
+            }
+        }
+        menuView.render();
+    }
+
+    // Lancer le jeu après l'écran d'accueil
+    deck.shuffle();
+    drawnCards.clear();
+    for (int i = 0; i < 4; ++i) {
+        if (!deck.isEmpty()) {
+            drawnCards.push_back(deck.drawCard());
+        }
+    }
+
+    while (view.isWindowOpen()) {
+        handleEvents();
+        update();
+        render();
+    }
+}
 
 void GameController::handleCardClick(const sf::Vector2i& mousePos) {
     float xPos = 500.0f;  // Initial X position for the cards
@@ -329,9 +367,6 @@ void GameController::playPlayerTurn() {
 }
 
 
-
-
-
 void GameController::enemyTurn() {
     // Check if the enemy deck is not empty
     if (!enemyDeck.isEmpty()) {
@@ -371,28 +406,19 @@ void GameController::enemyTurn() {
     }
 }
 
-
-
-
-
-
-
-
 void GameController::update() {
-    // Check if the enemy's health is less than or equal to 0
     if (enemy.getHealth() <= 0) {
         std::cout << "The enemy has been defeated!" << std::endl;
-        // End the game or display a message
-    }
-    // Check if the player's health is less than or equal to 0
-    if (player.getHealth() <= 0) {
+        view.displayVictoryScreen();
+        sf::sleep(sf::seconds(5));  // Affiche l'écran de victoire pendant 3 secondes
+        view.getWindow().close();  // Ferme la fenêtre
+    } else if (player.getHealth() <= 0) {
         std::cout << "You have been defeated!" << std::endl;
-        // You can add additional actions to finish the game here
+        view.displayDefeatScreen();
+        sf::sleep(sf::seconds(5));  // Affiche l'écran de défaite pendant 3 secondes
+        view.getWindow().close();  // Ferme la fenêtre
     }
 }
-
-
-
 
 void GameController::render() {
     // Reset the window before redrawing (clear the screen)
@@ -417,8 +443,3 @@ void GameController::render() {
 
 
 }
-
-
-
-
-

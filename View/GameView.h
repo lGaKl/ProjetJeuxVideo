@@ -27,6 +27,11 @@ private:
     sf::Texture backgroundTexture; // Texture pour le fond
     sf::Sprite backgroundSprite;  // Sprite pour le fond
     std::mt19937 rng;
+    sf::Texture victoryTexture;
+    sf::Sprite victorySprite;
+    sf::Texture defeatTexture;
+    sf::Sprite defeatSprite;
+
 public:
     GameView();
     sf::RenderWindow& getWindow() { return window; }
@@ -39,6 +44,8 @@ public:
     sf::CircleShape& getValidationCircle();
     void updateSituationText(const std::string& situationText);
     void initValidationCircle();
+    void displayVictoryScreen();
+    void displayDefeatScreen();
 };
 
 #endif // GAMEVIEW_H

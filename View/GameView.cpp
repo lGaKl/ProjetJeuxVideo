@@ -104,6 +104,24 @@ GameView::GameView() : window(sf::VideoMode(1900, 1080), "C++ Project") {
     enemyHealthText.setCharacterSize(30);
     enemyHealthText.setFillColor(sf::Color::Red);
     enemyHealthText.setPosition(1370.0f, 370.0f);
+
+    if(!victoryTexture.loadFromFile("Image/Crocofest_sexy.png")){
+        std::cerr << "Erreur de chargement de l'image de victoire!" << std::endl;
+    }
+    victorySprite.setTexture(victoryTexture);
+    victorySprite.setScale(
+        static_cast<float>(window.getSize().x) / victoryTexture.getSize().x,
+        static_cast<float>(window.getSize().y) / victoryTexture.getSize().y
+    );
+
+    if (!defeatTexture.loadFromFile("Image/GoldoCPC_GameOver2.png")) {
+        std::cerr << "Erreur de chargement de l'image de défaite!" << std::endl;
+    }
+    defeatSprite.setTexture(defeatTexture);
+    defeatSprite.setScale(
+        static_cast<float>(window.getSize().x) / defeatTexture.getSize().x,
+        static_cast<float>(window.getSize().y) / defeatTexture.getSize().y
+    );
 }
 
 sf::CircleShape& GameView::getValidationCircle() {
@@ -294,4 +312,14 @@ bool GameView::isWindowOpen() const {
     return window.isOpen();
 }
 
+void GameView::displayVictoryScreen() {
+    window.clear();
+    window.draw(victorySprite);
+    window.display();
+}
 
+void GameView::displayDefeatScreen() {
+    window.clear();
+    window.draw(defeatSprite);
+    window.display();
+}
