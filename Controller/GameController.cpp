@@ -8,6 +8,7 @@
 #include "mmsystem.h"
 #include <SFML/Audio.hpp>
 #include "CardFactory.h"
+
 bool isEnemyTurnReady = false;
 bool canInteractWithCards = true;
 bool isArchorActive = false;
@@ -460,19 +461,15 @@ void GameController::render() {
 
    static bool isSoundPlaying = false;
     // Uncomment below if audio support is added.
-    /*
-    static bool isSoundPlaying = false;
->>>>>>> 936920ca43d8d45df6bfd03b0a3aace17c9b2b00
+
+
+/*
 
     if (!isSoundPlaying) {
         PlaySound(TEXT("Intro.wav"), NULL, SND_ASYNC | SND_LOOP);  // Play sound in a loop.
         isSoundPlaying = true;
     }
-<<<<<<< HEAD
-
-
-=======
-    */
+*/
 }
 
 // Resets the game state and navigates to the main menu.

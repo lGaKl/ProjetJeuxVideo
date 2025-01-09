@@ -18,7 +18,7 @@ GameView::GameView() : window(sf::VideoMode::getDesktopMode(), "C++ Project", sf
     window.setVerticalSyncEnabled(true);
 
     // Attempt to load the font file.
-    if (!font.loadFromFile("Font/retro-land-mayhem.ttf")) {
+    if (!font.loadFromFile("retro-land-mayhem.ttf")) {
         std::cerr << "Error loading font!" << std::endl;
     }
 
@@ -42,7 +42,7 @@ GameView::GameView() : window(sf::VideoMode::getDesktopMode(), "C++ Project", sf
     sf::Vector2u textureSize = playerTexture.getSize();
 
     // Calculate the desired dimensions for scaling the player texture.
-    float targetWidth = 130.0f;
+    float targetWidth = 150.0f;
     float targetHeight = static_cast<float>(targetWidth) / textureSize.x * textureSize.y;
 
     // Compute the scale factors for resizing the texture.
