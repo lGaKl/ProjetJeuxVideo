@@ -51,3 +51,7 @@ bool Deck::isEmpty() const{return cards.empty();}
 const std::vector<Card>& Deck::getCard() const {
     return cards;
 }
+
+void Deck::clear() {
+    cards.clear();
+}

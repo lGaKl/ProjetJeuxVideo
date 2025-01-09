@@ -1,28 +1,30 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
+// The Enemy class represents the opponent in the game, managing their health and defense.
 class Enemy {
 public:
-    // Constructeur qui prend en argument les points de vie initiaux
+    // Constructor: Initializes the enemy with a specified amount of health.
     Enemy(int initialHealth);
 
-    // Accesseur pour obtenir les points de vie actuels de l'ennemi
+    // Returns the current health of the enemy.
     int getHealth() const;
 
-    // Méthode pour infliger des dégâts à l'ennemi
+    // Reduces the enemy's health by a specified amount, accounting for defense.
     void takeDamage(int damage);
 
-    // Méthode pour soigner l'ennemi
+    // Increases the enemy's health by a specified amount.
     void heal(int healAmount);
 
-    // Méthode pour savoir si l'ennemi est vivant
+    // Checks if the enemy is still alive (health > 0).
     bool isAlive() const;
+
+    // Sets the enemy's defense value to mitigate incoming damage.
     void applyDefense(int defenseValue);
 
-
 private:
-    int health;  // Points de vie de l'ennemi
-    int defense;
+    int health;  // Current health points of the enemy.
+    int defense; // Current defense points of the enemy.
 };
 
 #endif

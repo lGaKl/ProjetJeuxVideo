@@ -15,6 +15,7 @@ public:
     const std::vector<Card>& getCard() const;
     bool isEmpty() const;
     size_t size() const;
+    void clear(); // Vide le deck
 };
 
 #endif // DECK_H
